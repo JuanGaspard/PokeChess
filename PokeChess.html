@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokéChess</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            touch-action: manipulation;
+            background-color: #a2d2ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            max-width: 42rem; /* max-w-4xl */
+        }
+        
+        /* GAMEBOY FILTER (NOW POKEMON RED THEME) */
+        body.gameboy-filter {
+            background-color: #C8C8D1 !important;
+        }
+
+        .gameboy-filter .pokemon-title,
+        .gameboy-filter .coord-rank, 
+        .gameboy-filter .coord-file,
+        .gameboy-filter .pokemon-button,
+        .gameboy-filter .song-title,
+        .gameboy-filter .modal-content h2,
+        .gameboy-filter .game-over-modal-content h2 {
+            color: #000000 !important;
+            text-shadow: none !important;
+            -webkit-text-stroke: 0 !important;
+            text-stroke: 0 !important;
+        }
+
+        .gameboy-filter .board { 
+            border-color: #000000;
+            box-shadow: none;
+        }
+        .gameboy-filter .light { 
+            background-image: url('https://i.ibb.co/WvMtWgSR/PKC-Grey-Square.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: #C8C8D1 !important; 
+        }
+        .gameboy-filter .dark {
+            background-image: url('https://i.ibb.co/7NL3JqRS/PKC-Red-Square.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: #d59a9a !important; /* Fallback color */
+        }
+        
+        .gameboy-filter .piece { 
+            filter: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: none;
+            max-height: none;
+            pointer-events: none; 
+        }
+        
+        .gameboy-filter .selected { background-color: #c94d4d !important; } /* Darker red */
+        .gameboy-filter .valid-move-dot { background-color: rgba(0, 0, 0, 0.4); }
+        .gameboy-filter .valid-capture-ring { border-color: rgba(0, 0, 0, 0.4); }
+        .gameboy-filter .last-move { box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.5); }
+        .gameboy-filter .check { box-shadow: inset 0 0 0 5px #000000 !important; }
+        .gameboy-filter .modal-content { background-color: #C8C8D1; border: 4px solid #000000; }
+        .gameboy-filter .game-over-modal-content { background-color: #C8C8D1; border-color: #000000; }
+
+        .gameboy-filter .pawn-size-gb { width: 160%; height: 160%; }
+        .gameboy-filter .knight-size-gb { width: 150%; height: 150%; }
+        .gameboy-filter .bishop-size-gb { width: 150%; height: 150%; }
+        .gameboy-filter .rook-size-gb { width: 150%; height: 150%; }
+        .gameboy-filter .queen-size-gb { width: 150%; height: 150%; }
+        .gameboy-filter .king-size-gb { width: 130%; height: 130%; } 
+        
+        .pokemon-title {
+            font-family: 'Press Start 2P', cursive;
+            color: #ffcb05;
+            -webkit-text-stroke: 2px #2a5eea;
+            text-stroke: 2px #2a5eea;
+            text-shadow: 4px 4px 0 #000;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 12.5%);
+            grid-template-rows: repeat(8, 12.5%);
+            border: 3px solid #0d1b2a;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            position: relative; 
+        }
+        .square {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        .light { background-color: #e0e1dd; } 
+        .dark { background-color: #c94d4d; } 
+
+        .coord-rank, .coord-file {
+            position: absolute;
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(6px, 1.5vmin, 10px);
+        }
+        .coord-rank { top: 2px; left: 2px; }
+        .coord-file { bottom: 2px; right: 2px; }
+        .light .coord-rank, .light .coord-file { color: #8a2b2b; }
+        .dark .coord-rank, .dark .coord-file { color: #f2f2f2; }
+        .gameboy-filter .dark .coord-rank, .gameboy-filter .dark .coord-file { color: #ffffff !important; }
+
+
+        .piece { 
+            cursor: pointer;
+            object-fit: contain;
+            image-rendering: pixelated; 
+            -webkit-user-drag: none;
+            user-drag: none;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.4));
+            transition: opacity 0.1s ease-in-out;
+        }
+        
+        .moving-piece {
+            position: absolute;
+            z-index: 1000;
+            pointer-events: none;
+            transition: transform 0.25s linear;
+        }
+        
+        .knight-jump {
+            transition-timing-function: ease-in-out;
+        }
+        
+        .pawn-size { width: 75%; height: 75%; }
+        .knight-size, .bishop-size { width: 90%; height: 90%; }
+        .rook-size { width: 95%; height: 95%; }
+        .queen-size, .king-size { width: 100%; height: 100%; }
+        .mewtwo-piece { transform: translateY(2%); }
+        .selected { background-color: #ffcb05 !important; } 
+        .valid-move-dot { width: 35%; height: 35%; background-color: rgba(13, 27, 42, 0.4); border-radius: 50%; z-index: 1; }
+        .valid-capture-ring { width: 90%; height: 90%; border: 5px solid rgba(13, 27, 42, 0.4); border-radius: 50%; box-sizing: border-box; position: absolute; z-index: 1; }
+        
+        @keyframes blink-check {
+            0%, 100% { box-shadow: inset 0 0 0 5px rgba(61, 125, 202, 0.7); }
+            50% { box-shadow: none; }
+        }
+
+        .check { 
+            animation: blink-check 1s infinite !important;
+        }
+        
+        .checkmate {
+            background-color: rgba(61, 125, 202, 0.7) !important;
+        }
+        .last-move { 
+            box-shadow: inset 0 0 0 5px rgba(255, 203, 5, 0.7);
+        }
+
+        .pokemon-button {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #f8f8f8;
+            color: #111;
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 8px 16px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: inset -4px -4px 0px 0px #a8a8a8;
+            transition: all 0.1s ease-in-out;
+            position: relative;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pokemon-button:hover, .pokemon-button:focus {
+            background-color: #ddd;
+            box-shadow: inset -6px -6px 0px 0px #a8a8a8;
+        }
+        .pokemon-button:active {
+            box-shadow: inset 4px 4px 0px 0px #a8a8a8;
+        }
+        .pokemon-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: inset -2px -2px 0px 0px #a8a8a8;
+        }
+        .icon-button {
+            padding: 8px;
+        }
+        .song-title {
+            font-family: 'Press Start 2P', cursive;
+            color: black;
+            text-shadow: none;
+            font-size: 0.75rem;
+            margin-top: 0.75rem;
+            height: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background-color: #fff; padding: 2rem; border-radius: 0.5rem; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .promotion-choice { width: 80px; height: 80px; cursor: pointer; margin: 0 10px; transition: transform 0.2s; object-fit: contain; }
+        .promotion-choice:hover { transform: scale(1.2); }
+
+        .game-over-modal-content {
+            background-color: rgba(51, 51, 51, 0.9);
+            border: 4px solid #f8f8f8;
+            border-radius: 10px;
+            padding: 2rem 4rem;
+            text-align: center;
+        }
+        .game-over-title {
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 2px 2px 0 #000;
+        }
+        .text-white-victory { color: #f8f8f8; }
+        .text-red-victory { color: #ef5350; }
+        .text-draw { color: #f8f8f8; }
+
+        /* Filter Mode Image Swapping & Menu Styling */
+        .image-title, .image-button { display: none; }
+        .gameboy-filter .text-title, .gameboy-filter .text-button { display: none; }
+        .gameboy-filter .image-title { display: block; }
+        .gameboy-filter .image-button { display: flex; }
+        .gameboy-filter .song-title { display: none !important; }
+        .image-button img { height: 12px; }
+        .image-title { height: 60px; }
+        
+        .gameboy-filter .button-menu-container {
+            border: 4px solid #000000;
+            border-radius: 8px;
+            background-color: #C8C8D1;
+            padding: 0.5rem;
+            box-shadow: inset -4px -4px 0px 0px #A8A8B1;
+        }
+        
+        .gameboy-filter .button-wrapper {
+            justify-content: space-around;
+        }
+
+        .gameboy-filter .pokemon-button {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 4px;
+            height: auto;
+            min-height: 0;
+        }
+
+        .gameboy-filter .pokemon-button:hover,
+        .gameboy-filter .pokemon-button:focus,
+        .gameboy-filter .pokemon-button:active {
+            background-color: transparent;
+            box-shadow: none;
+        }
+        
+        .gameboy-filter .icon-button .text-button {
+            display: none;
+        }
+        
+        .gameboy-filter .image-button img {
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .gameboy-filter .pokemon-button:disabled {
+            opacity: 1;
+            cursor: pointer;
+        }
+        
+        .gameboy-filter .undo-redo-wrapper {
+            flex-direction: column;
+            gap: 8px;
+            align-items: center; /* Explicitly center items */
+        }
+
+        .gameboy-filter .undo-redo-wrapper > .pokemon-button {
+           margin-left: 0 !important;
+        }
+
+        /* --- STYLES FOR DEFAULT BUTTONS --- */
+        body:not(.gameboy-filter) .pokemon-button {
+            font-size: 1rem;
+            padding: 8px 10px;
+            flex-grow: 1;
+        }
+
+        body:not(.gameboy-filter) .icon-button {
+            flex-grow: 0;
+        }
+
+        body:not(.gameboy-filter) .pokemon-button .text-button {
+            white-space: nowrap;
+        }
+
+        body:not(.gameboy-filter) .button-wrapper {
+            display: flex;
+        }
+
+        body:not(.gameboy-filter) .button-wrapper > * {
+            border-radius: 0;
+            margin-left: -4px;
+        }
+
+        body:not(.gameboy-filter) .button-wrapper > *:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            margin-left: 0;
+        }
+
+        body:not(.gameboy-filter) .undo-redo-wrapper {
+            display: flex;
+            flex-grow: 2;
+        }
+        
+        body:not(.gameboy-filter) .undo-redo-wrapper #undo-button {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        body:not(.gameboy-filter) .undo-redo-wrapper #redo-button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-left: -4px;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        /* --- END NEW STYLES --- */
+
+    </style>
+</head>
+<body>
+    <div id="game-container" class="game-container">
+        <h1 class="pokemon-title text-5xl md:text-6xl text-center mb-4">
+            <span class="text-title">PokéChess</span>
+            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/POK%C3%A9CHESS/6c57928369ed701bd989e2b264aab956.png" class="image-title mx-auto" alt="PokéChess">
+        </h1>
+        
+        <div class="relative w-full" style="padding-top: 100%;">
+            <div id="board" class="board absolute top-0 left-0 w-full h-full"></div>
+        </div>
+
+        <div class="button-menu-container mt-4">
+            <div class="button-wrapper flex justify-center items-stretch w-full">
+                <button id="reset-button" class="pokemon-button">
+                    <span class="text-button">New Game</span>
+                    <div class="image-button hidden flex-col items-center space-y-1">
+                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/NEW/44cebcc6717b2fca9be1586c41dfecea.png" alt="New">
+                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/GAME/48b39ee034613f0aa8b00159a77cb488.png" alt="Game">
+                    </div>
+                </button>
+                <button id="flip-board-button" class="pokemon-button">
+                    <span class="text-button">Flip Board</span>
+                    <div class="image-button hidden flex-col items-center space-y-1">
+                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/FLIP/07df51bd5327de8308a59737411de364.png" alt="Flip">
+                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/BOARD/38348ec7055df78f54d680ddc9fe68e4.png" alt="Board">
+                    </div>
+                </button>
+                <button id="next-song-button" class="pokemon-button icon-button">
+                    <span class="text-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="currentColor">
+                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                        </svg>
+                    </span>
+                    <div class="image-button hidden flex-col items-center">
+                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/MUSIC/199b33b7fead06beeac793d0814beebb.png" alt="Music">
+                    </div>
+                </button>
+                <button id="filter-button" class="pokemon-button icon-button">
+                       <span class="text-button">
+                           <img src="https://static.thenounproject.com/png/1680894-200.png" alt="Filter" class="h-8">
+                       </span>
+                       <div class="image-button hidden flex-col items-center">
+                            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/FILTER/c7513dcd26fe97b3374b9f855449d0c1.png" alt="Filter">
+                       </div>
+                </button>
+                <div class="undo-redo-wrapper flex items-stretch">
+                    <button id="undo-button" class="pokemon-button">
+                        <span class="text-button">Undo</span>
+                        <div class="image-button hidden flex-col items-center">
+                            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/UNDO/ab43ac6f68628331236861b74f621126.png" alt="Undo">
+                        </div>
+                    </button>
+                    <button id="redo-button" class="pokemon-button">
+                        <span class="text-button">Redo</span>
+                        <div class="image-button hidden flex-col items-center">
+                            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/REDO/56ba1134b12fe99833f61640fe56f1ad.png" alt="Redo">
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="song-title" class="song-title"></div>
+    </div>
+
+    <div id="promotion-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4">Promote Pawn to:</h2>
+            <div id="promotion-options" class="flex"></div>
+        </div>
+    </div>
+    
+    <div id="game-over-modal" class="modal-overlay hidden">
+        <div class="game-over-modal-content">
+            <h2 id="game-over-message" class="game-over-title text-3xl mb-6"></h2>
+            <button id="play-again-button" class="pokemon-button">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="cry-P" src="https://play.pokemonshowdown.com/audio/cries/pikachu.ogg"></audio>
+    <audio id="cry-R" src="https://play.pokemonshowdown.com/audio/cries/blastoise.ogg"></audio>
+    <audio id="cry-N" src="https://play.pokemonshowdown.com/audio/cries/rapidash.mp3"></audio>
+    <audio id="cry-B" src="https://play.pokemonshowdown.com/audio/cries/lucario.mp3"></audio>
+    <audio id="cry-Q" src="https://play.pokemonshowdown.com/audio/cries/lugia.mp3"></audio>
+    <audio id="cry-K" src="https://play.pokemonshowdown.com/audio/cries/arceus.mp3"></audio>
+    <audio id="cry-p" src="https://play.pokemonshowdown.com/audio/cries/mimikyu.mp3"></audio>
+    <audio id="cry-r" src="https://play.pokemonshowdown.com/audio/cries/tyranitar.mp3"></audio>
+    <audio id="cry-n" src="https://play.pokemonshowdown.com/audio/cries/zoroark.mp3"></audio>
+    <audio id="cry-b" src="https://play.pokemonshowdown.com/audio/cries/gengar.mp3"></audio>
+    <audio id="cry-q" src="https://play.pokemonshowdown.com/audio/cries/mewtwo.mp3"></audio>
+    <audio id="cry-k" src="https://play.pokemonshowdown.com/audio/cries/giratina.mp3"></audio>
+    <audio id="attack-P" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/lfkwlijesl/Thunder%20Wave%20part%202.mp3"></audio>
+    <audio id="attack-R" src="https://play.pokemonshowdown.com/audio/cries/blastoise.ogg"></audio>
+    <audio id="attack-N" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/yztrjeemjs/Flame%20Wheel%20part%202.mp3"></audio>
+    <audio id="attack-B" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/bjxgpmfyyj/Comet%20Punch%201hit.mp3"></audio>
+    <audio id="attack-Q" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/hpodvatemp/Aerial%20Ace.mp3"></audio>
+    <audio id="attack-K" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/ekkflnfwbp/Hyper%20Beam.mp3"></audio>
+    <audio id="attack-p" src="https://vgmsite.com/soundtracks/pokemon-sfx-gen-7-attack-moves-sumo-usum/bjahnszfom/Play%20Rough.mp3"></audio>
+    <audio id="attack-r" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/povejogvnk/Crunch.mp3"></audio>
+    <audio id="attack-n" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/ghjlhhjodi/Night%20Shade.mp3"></audio>
+    <audio id="attack-b" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/cteaqitvgn/Shadow%20Ball.mp3"></audio>
+    <audio id="attack-q" src="https://vgmsite.com/soundtracks/pokemon-sfx-gen-7-attack-moves-sumo-usum/uidkfdciqr/Psyshock.mp3"></audio>
+    <audio id="attack-k" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/anevmrgoyd/Dragon%20Claw.mp3"></audio>
+    <audio id="check-sound" src="https://us-tuna-sounds-files.voicemod.net/ce114ce1-89ea-4b10-9adc-07ba5f549008-1664318472377.mp3"></audio>
+    
+    <!-- Filter Mode Specific Sounds -->
+    <audio id="cry-p-filter" src="https://play.pokemonshowdown.com/audio/cries/meowth.mp3"></audio>
+    <audio id="attack-p-filter" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/llqsdusjbf/Pay%20Day.mp3"></audio>
+    <audio id="cry-B-filter" src="https://play.pokemonshowdown.com/audio/cries/machamp.mp3"></audio>
+    <audio id="attack-B-filter" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/kbofhygler/Dynamic%20Punch.mp3"></audio>
+    <audio id="cry-Q-filter" src="https://play.pokemonshowdown.com/audio/cries/articuno.mp3"></audio>
+    <audio id="attack-Q-filter" src="https://kappa.vgmsite.com/soundtracks/pokemon-sfx-gen-3-attack-moves-rse-fr-lg/qvshaendhz/Ice%20Beam.mp3"></audio>
+    <audio id="cry-K-filter" src="https://play.pokemonshowdown.com/audio/cries/entei.mp3"></audio>
+    <audio id="attack-K-filter" src="https://vgmsite.com/soundtracks/pokemon-sfx-gen-7-attack-moves-sumo-usum/pzdtqjzmcx/Sacred%20Fire.mp3"></audio>
+    <audio id="cry-n-filter" src="https://play.pokemonshowdown.com/audio/cries/arcanine.mp3"></audio>
+    <audio id="attack-n-filter" src="https://vgmsite.com/soundtracks/pokemon-sfx-gen-7-attack-moves-sumo-usum/tzewelbjgv/Take%20Down.mp3"></audio>
+    <audio id="cry-r-filter" src="https://play.pokemonshowdown.com/audio/cries/rhydon.mp3"></audio>
+    <audio id="attack-r-filter" src="https://vgmsite.com/soundtracks/pokemon-sfx-gen-7-attack-moves-sumo-usum/jzyedmphyy/Earthquake.mp3"></audio>
+    <audio id="cry-k-filter" src="https://play.pokemonshowdown.com/audio/cries/feraligatr.mp3"></audio>
+    <audio id="attack-k-filter" src="https://vgmsite.com/soundtracks/pokemon-sfx-gen-7-attack-moves-sumo-usum/aglohqlzdv/Hydro%20Cannon.mp3"></audio>
+    
+    <audio id="battle-music" src="https://eta.vgmtreasurechest.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/recoqweo/1-15.%20Battle%20%28VS%20Trainer%29.mp3"></audio>
+    <audio id="battle-music-wild" src="https://eta.vgmtreasurechest.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/hjekpysq/1-07.%20Battle%20%28VS%20Wild%20Pok%C3%A9mon%29.mp3"></audio>
+    <audio id="battle-music-gym" src="https://eta.vgmtreasurechest.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/qbhhatoy/1-28.%20Battle%20%28VS%20Gym%20Leader%29.mp3"></audio>
+    <audio id="battle-music-road" src="https://eta.vgmtreasurechest.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/otgjztpe/1-42.%20Victory%20Road.mp3"></audio>
+    <audio id="battle-music-rival" src="https://eta.vgmtreasurechest.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/lkyjzmye/1-43.%20Last%20Battle%20%28VS%20Rival%29.mp3"></audio>
+    <audio id="victory-music" loop src="https://eta.vgmtreasurechest.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/aoegzrlp/1-16.%20Victory%20%28VS%20Trainer%29.mp3"></audio>
+    <audio id="victory-music-rocket" loop src="https://eta.vgmtreasurechest.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/eqdqflwa/1-36.%20Team%20Rocket%20Hideout.mp3"></audio>
+
+    <!-- New Johto Songs -->
+    <audio id="battle-music-johto-wild-day" src="https://kappa.vgmsite.com/soundtracks/pokemon-gold-silver-crystal/alndxleq/17.%20Battle%21%20%28Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Day%29.mp3"></audio>
+    <audio id="battle-music-johto-wild-night" src="https://kappa.vgmsite.com/soundtracks/pokemon-gold-silver-crystal/dzvanjbb/18.%20Battle%21%20%28Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Night%29.mp3"></audio>
+    <audio id="battle-music-johto-trainer" src="https://kappa.vgmsite.com/soundtracks/pokemon-gold-silver-crystal/tfbvpadm/35.%20Battle%21%20%28Trainer%20Battle%20-%20Johto%29.mp3"></audio>
+    <audio id="battle-music-johto-rival" src="https://kappa.vgmsite.com/soundtracks/pokemon-gold-silver-crystal/sdivluyc/29.%20Battle%21%20%28Rival%29.mp3"></audio>
+    <audio id="battle-music-johto-rocket" src="https://kappa.vgmsite.com/soundtracks/pokemon-gold-silver-crystal/ykyxrqkq/56.%20Battle%21%20%28Team%20Rocket%29.mp3"></audio>
+
+
+    <script>
+        const boardElement = document.getElementById('board');
+        const resetButton = document.getElementById('reset-button');
+        const flipBoardButton = document.getElementById('flip-board-button');
+        const undoButton = document.getElementById('undo-button');
+        const redoButton = document.getElementById('redo-button');
+        const promotionModal = document.getElementById('promotion-modal');
+        const promotionOptions = document.getElementById('promotion-options');
+        const gameOverModal = document.getElementById('game-over-modal');
+        const gameOverMessage = document.getElementById('game-over-message');
+        const playAgainButton = document.getElementById('play-again-button');
+        const checkSound = document.getElementById('check-sound');
+        const nextSongButton = document.getElementById('next-song-button');
+        const songTitleElement = document.getElementById('song-title');
+        const gameContainer = document.getElementById('game-container');
+        const filterButton = document.getElementById('filter-button');
+        
+        const battleMusic = document.getElementById('battle-music');
+        const battleMusicWild = document.getElementById('battle-music-wild');
+        const battleMusicGym = document.getElementById('battle-music-gym');
+        const battleMusicRoad = document.getElementById('battle-music-road');
+        const battleMusicRival = document.getElementById('battle-music-rival');
+        const victoryMusic = document.getElementById('victory-music');
+        const victoryMusicRocket = document.getElementById('victory-music-rocket');
+
+        // New Johto Song elements
+        const battleMusicJohtoWildDay = document.getElementById('battle-music-johto-wild-day');
+        const battleMusicJohtoWildNight = document.getElementById('battle-music-johto-wild-night');
+        const battleMusicJohtoTrainer = document.getElementById('battle-music-johto-trainer');
+        const battleMusicJohtoRival = document.getElementById('battle-music-johto-rival');
+        const battleMusicJohtoRocket = document.getElementById('battle-music-johto-rocket');
+
+        const battleMusicPlaylist = [
+            battleMusic, 
+            battleMusicWild, 
+            battleMusicGym, 
+            battleMusicRoad, 
+            battleMusicRival,
+            battleMusicJohtoWildDay,
+            battleMusicJohtoWildNight,
+            battleMusicJohtoTrainer,
+            battleMusicJohtoRival,
+            battleMusicJohtoRocket
+        ];
+        const allMusic = [...battleMusicPlaylist, victoryMusic, victoryMusicRocket];
+        
+        let currentPlaylist = []; 
+        let currentPlaylistIndex = 0;
+
+        const songTitles = new Map([
+            [battleMusic, "Battle (VS Trainer)"],
+            [battleMusicWild, "Battle (VS Wild Pokémon)"],
+            [battleMusicGym, "Battle (VS Gym Leader)"],
+            [battleMusicRoad, "Victory Road"],
+            [battleMusicRival, "Last Battle (VS Rival)"],
+            [battleMusicJohtoWildDay, "Battle! (Wild Pokémon - Johto - Day)"],
+            [battleMusicJohtoWildNight, "Battle! (Wild Pokémon - Johto - Night)"],
+            [battleMusicJohtoTrainer, "Battle! (Trainer Battle - Johto)"],
+            [battleMusicJohtoRival, "Battle! (Rival)"],
+            [battleMusicJohtoRocket, "Battle! (Team Rocket)"]
+        ]);
+
+        allMusic.forEach(audio => audio.volume = 0.2);
+
+        const pokemonCries = {
+            'P': document.getElementById('cry-P'), 'R': document.getElementById('cry-R'), 'N': document.getElementById('cry-N'), 'B': document.getElementById('cry-B'), 'Q': document.getElementById('cry-Q'), 'K': document.getElementById('cry-K'),
+            'p': document.getElementById('cry-p'), 'r': document.getElementById('cry-r'), 'n': document.getElementById('cry-n'), 'b': document.getElementById('cry-b'), 'q': document.getElementById('cry-q'), 'k': document.getElementById('cry-k'),
+        };
+
+        const pokemonAttackSounds = {
+            'P': document.getElementById('attack-P'), 'R': document.getElementById('attack-R'), 'N': document.getElementById('attack-N'), 'B': document.getElementById('attack-B'), 'Q': document.getElementById('attack-Q'), 'K': document.getElementById('attack-K'),
+            'p': document.getElementById('attack-p'), 'r': document.getElementById('attack-r'), 'n': document.getElementById('attack-n'), 'b': document.getElementById('attack-b'), 'q': document.getElementById('attack-q'), 'k': document.getElementById('attack-k'),
+        };
+        
+        const filterPokemonCries = {
+            'p': document.getElementById('cry-p-filter'),
+            'B': document.getElementById('cry-B-filter'),
+            'Q': document.getElementById('cry-Q-filter'),
+            'K': document.getElementById('cry-K-filter'),
+            'n': document.getElementById('cry-n-filter'),
+            'r': document.getElementById('cry-r-filter'),
+            'k': document.getElementById('cry-k-filter'),
+        };
+
+        const filterPokemonAttackSounds = {
+            'p': document.getElementById('attack-p-filter'),
+            'B': document.getElementById('attack-B-filter'),
+            'Q': document.getElementById('cry-Q-filter'),
+            'K': document.getElementById('cry-K-filter'),
+            'n': document.getElementById('attack-n-filter'),
+            'r': document.getElementById('attack-r-filter'),
+            'k': document.getElementById('attack-k-filter'),
+        };
+
+
+        const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        const POKEMON_SPRITES = { 'K': 'https://play.pokemonshowdown.com/sprites/ani/arceus.gif', 'Q': 'https://play.pokemonshowdown.com/sprites/ani/lugia.gif', 'R': 'https://play.pokemonshowdown.com/sprites/ani/blastoise.gif', 'B': 'https://play.pokemonshowdown.com/sprites/ani/lucario.gif', 'N': 'https://play.pokemonshowdown.com/sprites/ani/rapidash.gif', 'P': 'https://play.pokemonshowdown.com/sprites/ani/pikachu.gif', 'k': 'https://play.pokemonshowdown.com/sprites/ani/giratina-origin.gif', 'q': 'https://play.pokemonshowdown.com/sprites/ani/mewtwo.gif', 'r': 'https://play.pokemonshowdown.com/sprites/ani/tyranitar.gif', 'b': 'https://play.pokemonshowdown.com/sprites/ani/gengar.gif', 'n': 'https://play.pokemonshowdown.com/sprites/ani/zoroark.gif', 'p': 'https://play.pokemonshowdown.com/sprites/ani/mimikyu-busted.gif' };
+        
+        const POKEMON_SPRITES_STATIC = { 
+            'K': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/crystal/transparent/244.png', // Entei
+            'Q': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/144.png', // Articuno
+            'R': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/9.png',  // Blastoise
+            'B': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/68.png',  // Machamp
+            'N': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/78.png',  // Rapidash
+            'P': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/25.png',  // Pikachu
+            'k': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/silver/transparent/160.png', // Feraligatr
+            'q': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/crystal/transparent/150.png', // Mewtwo
+            'r': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/112.png', // Rhydon
+            'b': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/94.png',  // Gengar
+            'n': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/59.png',  // Arcanine
+            'p': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/crystal/transparent/52.png'  // Meowth
+        };
+
+        const STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+
+        let moveHistory = [];
+        let currentMoveIndex = -1;
+        let board = [];
+        let turn = 'w';
+        let selectedPiece = null;
+        let validMoves = [];
+        let enPassantTarget = '-';
+        let castlingRights = 'KQkq';
+        let lastMove = null;
+        let isBoardFlipped = false;
+        let isAnimating = false;
+        let isMusicStarted = false;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function stopAllMusic() {
+            allMusic.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            songTitleElement.textContent = '';
+        }
+        
+        function updateSongTitleDisplay() {
+            const currentSong = currentPlaylist[currentPlaylistIndex];
+            songTitleElement.textContent = songTitles.get(currentSong) || '';
+        }
+
+        function playNextSongInPlaylist() {
+            if (currentPlaylist.length > 0) {
+                 currentPlaylist[currentPlaylistIndex].pause();
+                 currentPlaylist[currentPlaylistIndex].currentTime = 0;
+            }
+            
+            currentPlaylistIndex++;
+            if (currentPlaylistIndex >= currentPlaylist.length) {
+                currentPlaylistIndex = 0;
+            }
+
+            if (currentPlaylist.length > 0) {
+                const nextSong = currentPlaylist[currentPlaylistIndex];
+                const title = songTitles.get(nextSong) || '';
+
+                if (title.includes('Battle!')) {
+                    nextSong.currentTime = 2.5;
+                } else if (title.includes('Battle')) {
+                    nextSong.currentTime = 3.5;
+                } else {
+                    nextSong.currentTime = 0;
+                }
+
+                nextSong.play();
+                updateSongTitleDisplay();
+            }
+        }
+        
+        function startInitialPlaylist() {
+            stopAllMusic();
+            const firstSong = battleMusic;
+            const otherSongs = battleMusicPlaylist.filter(song => song !== firstSong);
+            shuffleArray(otherSongs);
+            currentPlaylist = [firstSong, ...otherSongs];
+            
+            currentPlaylistIndex = 0;
+            currentPlaylist[0].currentTime = 0;
+            currentPlaylist[0].play();
+            updateSongTitleDisplay();
+        }
+
+        function startRandomPlaylist() {
+            stopAllMusic();
+            const shuffledPlaylist = [...battleMusicPlaylist];
+            shuffleArray(shuffledPlaylist);
+            currentPlaylist = shuffledPlaylist;
+
+            currentPlaylistIndex = 0;
+            currentPlaylist[0].currentTime = 0;
+            currentPlaylist[0].play();
+            updateSongTitleDisplay();
+        }
+        
+        battleMusicPlaylist.forEach(song => {
+            song.addEventListener('ended', playNextSongInPlaylist);
+        });
+
+
+        function initGame(isFromResetButton = false) {
+            moveHistory = [STARTING_FEN];
+            currentMoveIndex = 0;
+            isMusicStarted = false;
+            stopAllMusic();
+            
+            if (isFromResetButton) {
+                startRandomPlaylist();
+                isMusicStarted = true;
+            }
+
+            loadFen(STARTING_FEN);
+        }
+
+        function loadFen(fen) {
+            const [position, activeColor, castling, enPassant] = fen.split(' ');
+            board = [];
+            const rows = position.split('/');
+            for (const row of rows) {
+                const boardRow = [];
+                for (const char of row) {
+                    if (isNaN(char)) { boardRow.push(char); } 
+                    else { for (let i = 0; i < parseInt(char); i++) { boardRow.push(null); } }
+                }
+                board.push(boardRow);
+            }
+            turn = activeColor;
+            castlingRights = castling;
+            enPassantTarget = enPassant;
+            selectedPiece = null;
+            validMoves = [];
+            lastMove = null;
+            renderBoard();
+            updateUndoRedoButtons();
+        }
+
+        function generateFen() {
+            let fen = '';
+            for (let r = 0; r < 8; r++) {
+                let emptyCount = 0;
+                for (let c = 0; c < 8; c++) {
+                    const piece = board[r][c];
+                    if (piece) {
+                        if (emptyCount > 0) {
+                            fen += emptyCount;
+                            emptyCount = 0;
+                        }
+                        fen += piece;
+                    } else {
+                        emptyCount++;
+                    }
+                }
+                if (emptyCount > 0) {
+                    fen += emptyCount;
+                }
+                if (r < 7) {
+                    fen += '/';
+                }
+            }
+            fen += ` ${turn} ${castlingRights || '-'} ${enPassantTarget || '-'}`;
+            return fen;
+        }
+
+        function renderBoard() {
+            boardElement.innerHTML = '';
+            const isFilterActive = document.body.classList.contains('gameboy-filter');
+            const currentSpriteSet = isFilterActive ? POKEMON_SPRITES_STATIC : POKEMON_SPRITES;
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const actualRow = isBoardFlipped ? 7 - r : r;
+                    const actualCol = isBoardFlipped ? 7 - c : c;
+                    const square = document.createElement('div');
+                    const isLight = (actualRow + actualCol) % 2 === 0;
+                    square.className = `square ${isLight ? 'light' : 'dark'}`;
+                    square.dataset.row = actualRow;
+                    square.dataset.col = actualCol;
+                    if (actualCol === 0) {
+                        const rank = document.createElement('span');
+                        rank.className = 'coord-rank';
+                        rank.innerText = 8 - actualRow;
+                        square.appendChild(rank);
+                    }
+                    if (actualRow === 7) {
+                        const file = document.createElement('span');
+                        file.className = 'coord-file';
+                        file.innerText = FILES[actualCol];
+                        square.appendChild(file);
+                    }
+                    const piece = board[actualRow][actualCol];
+                    if (piece) {
+                        const pieceElement = document.createElement('img');
+                        pieceElement.className = 'piece';
+                        pieceElement.src = currentSpriteSet[piece];
+                        pieceElement.alt = piece;
+                        pieceElement.onerror = () => { pieceElement.alt = piece; };
+                        
+                        let sizeClass = '';
+                        const pieceType = piece.toLowerCase();
+                        if (isFilterActive) {
+                            if (pieceType === 'p') sizeClass = 'pawn-size-gb';
+                            else if (pieceType === 'n') sizeClass = 'knight-size-gb';
+                            else if (pieceType === 'b') sizeClass = 'bishop-size-gb';
+                            else if (pieceType === 'r') sizeClass = 'rook-size-gb';
+                            else if (pieceType === 'q') sizeClass = 'queen-size-gb';
+                            else if (pieceType === 'k') sizeClass = 'king-size-gb';
+                        } else {
+                            if (pieceType === 'p') sizeClass = 'pawn-size';
+                            else if (pieceType === 'n') sizeClass = 'knight-size';
+                            else if (pieceType === 'b') sizeClass = 'bishop-size';
+                            else if (pieceType === 'r') sizeClass = 'rook-size';
+                            else if (pieceType === 'q') sizeClass = 'queen-size';
+                            else if (pieceType === 'k') sizeClass = 'king-size';
+                        }
+                        if (sizeClass) pieceElement.classList.add(sizeClass);
+
+                        if (piece === 'q' && !isFilterActive) pieceElement.classList.add('mewtwo-piece');
+                        square.appendChild(pieceElement);
+                        
+                        if (getPieceColor(piece) === turn) {
+                            square.style.cursor = 'pointer';
+                        }
+                    }
+                    boardElement.appendChild(square);
+                }
+            }
+            highlightLastMove();
+            highlightKingInCheck();
+        }
+        
+        function clearHighlights() {
+            document.querySelectorAll('.square.selected').forEach(s => s.classList.remove('selected'));
+            document.querySelectorAll('.valid-move-dot, .valid-capture-ring').forEach(indicator => indicator.remove());
+        }
+        
+        function highlightMoves() {
+            clearHighlights();
+            if (selectedPiece) {
+                const { row, col } = selectedPiece;
+                document.querySelector(`[data-row='${row}'][data-col='${col}']`).classList.add('selected');
+                validMoves.forEach(({ row: r, col: c }) => {
+                    const square = document.querySelector(`[data-row='${r}'][data-col='${c}']`);
+                    if (square) {
+                        if (board[r][c]) {
+                            const ring = document.createElement('div');
+                            ring.className = 'valid-capture-ring';
+                            square.appendChild(ring);
+                        } else {
+                            const dot = document.createElement('div');
+                            dot.className = 'valid-move-dot';
+                            square.appendChild(dot);
+                        }
+                    }
+                });
+            }
+        }
+
+        function highlightKingInCheck() {
+            document.querySelectorAll('.check, .checkmate').forEach(s => {
+                s.classList.remove('check');
+                s.classList.remove('checkmate');
+            });
+            const inCheck = isKingInCheck(turn, board);
+            if (inCheck) {
+                const kingPos = findKing(turn, board);
+                if (kingPos) {
+                    const kingSquare = document.querySelector(`[data-row='${kingPos.row}'][data-col='${kingPos.col}']`);
+                    if (kingSquare) {
+                        const hasMoves = hasAnyValidMoves(turn, board, enPassantTarget, castlingRights);
+                        kingSquare.classList.add(hasMoves ? 'check' : 'checkmate');
+                    }
+                }
+            }
+        }
+
+        function highlightLastMove() {
+            document.querySelectorAll('.last-move').forEach(s => s.classList.remove('last-move'));
+            if (lastMove) {
+                const { from, to } = lastMove;
+                const fromSquare = document.querySelector(`[data-row='${from.row}'][data-col='${from.col}']`);
+                const toSquare = document.querySelector(`[data-row='${to.row}'][data-col='${to.col}']`);
+                if (fromSquare) fromSquare.classList.add('last-move');
+                if (toSquare) toSquare.classList.add('last-move');
+            }
+        }
+
+        function onSquareClick(event) {
+            if (isAnimating) return;
+            const square = event.target.closest('.square');
+            if (!square) return;
+            const row = parseInt(square.dataset.row);
+            const col = parseInt(square.dataset.col);
+            const piece = board[row][col];
+            const pieceColor = getPieceColor(piece);
+            if (selectedPiece) {
+                const isValidMove = validMoves.some(move => move.row === row && move.col === col);
+                if (isValidMove) {
+                    animateMove(selectedPiece, { row, col });
+                } else {
+                    selectedPiece = null;
+                    validMoves = [];
+                    clearHighlights();
+                    if (pieceColor === turn) { selectPiece(row, col); }
+                }
+            } else if (pieceColor === turn) {
+                selectPiece(row, col);
+            }
+        }
+        
+        function selectPiece(row, col) {
+            selectedPiece = { row, col };
+            validMoves = getValidMovesForPiece(row, col, board, enPassantTarget, castlingRights);
+            highlightMoves();
+        }
+
+        function animateMove(from, to, promotionPiece = null) {
+            const piece = board[from.row][from.col];
+
+            if (piece && piece.toLowerCase() === 'p' && (to.row === 0 || to.row === 7) && !promotionPiece) {
+                showPromotionModal(from, to);
+                return;
+            }
+
+            isAnimating = true;
+            const capturedPiece = board[to.row][to.col];
+            const enPassantCol = enPassantTarget !== '-' ? FILES.indexOf(enPassantTarget[0]) : -1;
+            const enPassantRow = enPassantTarget !== '-' ? 8 - parseInt(enPassantTarget[1]) : -1;
+            const isEnPassant = piece.toLowerCase() === 'p' && to.col === enPassantCol && to.row === enPassantRow;
+
+            // --- Sound Logic ---
+            const isFilterActive = document.body.classList.contains('gameboy-filter');
+            let crySound = pokemonCries[piece];
+            let attackSound = pokemonAttackSounds[piece];
+
+            if (isFilterActive) {
+                crySound = filterPokemonCries[piece] || pokemonCries[piece];
+                attackSound = filterPokemonAttackSounds[piece] || pokemonAttackSounds[piece];
+            }
+
+            if ((capturedPiece || isEnPassant) && attackSound) {
+                attackSound.currentTime = 0;
+                attackSound.play();
+            } else if (crySound) {
+                crySound.currentTime = 0;
+                crySound.play();
+            }
+            // --- End Sound Logic ---
+
+            const fromSquare = document.querySelector(`[data-row='${from.row}'][data-col='${from.col}']`);
+            const toSquare = document.querySelector(`[data-row='${to.row}'][data-col='${to.col}']`);
+            const pieceElement = fromSquare.querySelector('.piece');
+
+            if (pieceElement) {
+                const movingPiece = pieceElement.cloneNode(true);
+                movingPiece.classList.add('moving-piece');
+                boardElement.appendChild(movingPiece);
+                
+                const pieceRect = pieceElement.getBoundingClientRect();
+                movingPiece.style.width = `${pieceRect.width}px`;
+                movingPiece.style.height = `${pieceRect.height}px`;
+
+                if (isFilterActive) {
+                    const startXCenter = fromSquare.offsetLeft + fromSquare.offsetWidth / 2;
+                    const startYCenter = fromSquare.offsetTop + fromSquare.offsetHeight / 2;
+                    const endXCenter = toSquare.offsetLeft + toSquare.offsetWidth / 2;
+                    const endYCenter = toSquare.offsetTop + toSquare.offsetHeight / 2;
+                    
+                    movingPiece.style.left = `${startXCenter}px`;
+                    movingPiece.style.top = `${startYCenter}px`;
+                    
+                    pieceElement.style.opacity = '0';
+                    if (piece.toLowerCase() === 'n') movingPiece.classList.add('knight-jump');
+
+                    requestAnimationFrame(() => {
+                        const deltaX = endXCenter - startXCenter;
+                        const deltaY = endYCenter - startYCenter;
+                        movingPiece.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
+                    });
+                } else {
+                    const pieceWidth = pieceElement.offsetWidth;
+                    const pieceHeight = pieceElement.offsetHeight;
+                    
+                    const startX = fromSquare.offsetLeft + (fromSquare.offsetWidth - pieceWidth) / 2;
+                    const startY = fromSquare.offsetTop + (fromSquare.offsetHeight - pieceHeight) / 2;
+                    
+                    movingPiece.style.left = `${startX}px`;
+                    movingPiece.style.top = `${startY}px`;
+                    movingPiece.style.transform = '';
+                    
+                    pieceElement.style.opacity = '0';
+                    if (piece.toLowerCase() === 'n') movingPiece.classList.add('knight-jump');
+                    
+                    requestAnimationFrame(() => {
+                        const endX = toSquare.offsetLeft + (toSquare.offsetWidth - pieceWidth) / 2;
+                        const endY = toSquare.offsetTop + (toSquare.offsetHeight - pieceHeight) / 2;
+                        const deltaX = endX - startX;
+                        const deltaY = endY - startY;
+                        movingPiece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                    });
+                }
+
+                setTimeout(() => {
+                    boardElement.removeChild(movingPiece);
+                    performMove(from, to, promotionPiece);
+                }, 250);
+            } else {
+                performMove(from, to, promotionPiece);
+            }
+        }
+
+        function performMove(from, to, promotionPiece = null) {
+            // --- Start Music on First Move ---
+            if (!isMusicStarted) {
+                startInitialPlaylist();
+                isMusicStarted = true;
+            }
+            // --- End Music Logic ---
+
+            const piece = board[from.row][from.col];
+            const enPassantCol = enPassantTarget !== '-' ? FILES.indexOf(enPassantTarget[0]) : -1;
+            const enPassantRow = enPassantTarget !== '-' ? 8 - parseInt(enPassantTarget[1]) : -1;
+            if (piece.toLowerCase() === 'p' && to.col === enPassantCol && to.row === enPassantRow) {
+                const capturedPawnRow = turn === 'w' ? to.row + 1 : to.row - 1;
+                board[capturedPawnRow][to.col] = null;
+            }
+            
+            if (promotionPiece) {
+                board[to.row][to.col] = turn === 'w' ? promotionPiece.toUpperCase() : promotionPiece.toLowerCase();
+            } else {
+                board[to.row][to.col] = piece;
+            }
+            board[from.row][from.col] = null;
+            
+            if (piece.toLowerCase() === 'k' && Math.abs(from.col - to.col) === 2) {
+                const rookCol = to.col > from.col ? 7 : 0;
+                const newRookCol = to.col > from.col ? 5 : 3;
+                const rook = board[from.row][rookCol];
+                board[from.row][rookCol] = null;
+                board[from.row][newRookCol] = rook;
+            }
+            
+            if (piece.toLowerCase() === 'p' && Math.abs(from.row - to.row) === 2) {
+                const file = FILES[from.col];
+                const rank = turn === 'w' ? 3 : 6;
+                enPassantTarget = `${file}${rank}`;
+            } else {
+                enPassantTarget = '-';
+            }
+            updateCastlingRights(piece, from);
+            lastMove = { from, to };
+            selectedPiece = null;
+            validMoves = [];
+            switchTurn();
+            
+            const newFen = generateFen();
+            moveHistory = moveHistory.slice(0, currentMoveIndex + 1);
+            moveHistory.push(newFen);
+            currentMoveIndex++;
+            
+            renderBoard();
+            
+            const inCheck = isKingInCheck(turn, board);
+            const hasMoves = hasAnyValidMoves(turn, board, enPassantTarget, castlingRights);
+
+            if (inCheck && hasMoves) {
+                checkSound.currentTime = 0;
+                checkSound.play();
+            }
+
+            if (!hasMoves) {
+                if (inCheck) {
+                    const winner = turn === 'w' ? 'b' : 'w';
+                    showGameOverModal(winner);
+                } else {
+                    showGameOverModal('draw');
+                }
+            }
+
+            updateUndoRedoButtons();
+            isAnimating = false;
+        }
+
+        function showPromotionModal(from, to) {
+            isAnimating = false;
+            promotionOptions.innerHTML = '';
+            const isFilterActive = document.body.classList.contains('gameboy-filter');
+            const currentSpriteSet = isFilterActive ? POKEMON_SPRITES_STATIC : POKEMON_SPRITES;
+            const pieces = turn === 'w' ? ['Q', 'R', 'B', 'N'] : ['q', 'r', 'b', 'n'];
+
+            pieces.forEach(p => {
+                const choice = document.createElement('img');
+                choice.className = 'promotion-choice';
+                choice.src = currentSpriteSet[p];
+                choice.onclick = () => {
+                    promotionModal.classList.add('hidden');
+                    animateMove(from, to, p);
+                };
+                promotionOptions.appendChild(choice);
+            });
+            promotionModal.classList.remove('hidden');
+        }
+
+        function showGameOverModal(winner) {
+            stopAllMusic();
+            if (winner === 'w') {
+                gameOverMessage.innerText = 'Team Ash Wins!';
+                gameOverMessage.className = 'game-over-title text-3xl mb-6 text-white-victory';
+                victoryMusic.play();
+            } else if (winner === 'b') {
+                gameOverMessage.innerText = 'Team Rocket Wins!';
+                gameOverMessage.className = 'game-over-title text-3xl mb-6 text-red-victory';
+                victoryMusicRocket.play();
+            } else {
+                gameOverMessage.innerText = 'Stalemate!';
+                gameOverMessage.className = 'game-over-title text-3xl mb-6 text-draw';
+            }
+            gameOverModal.classList.remove('hidden');
+        }
+
+        function updateCastlingRights(piece, from) {
+            if (piece === 'K') castlingRights = castlingRights.replace('K', '').replace('Q', '');
+            if (piece === 'k') castlingRights = castlingRights.replace('k', '').replace('q', '');
+            if (piece === 'R' && from.row === 7 && from.col === 0) castlingRights = castlingRights.replace('Q', '');
+            if (piece === 'R' && from.row === 7 && from.col === 7) castlingRights = castlingRights.replace('K', '');
+            if (piece === 'r' && from.row === 0 && from.col === 0) castlingRights = castlingRights.replace('q', '');
+            if (piece === 'r' && from.row === 0 && from.col === 7) castlingRights = castlingRights.replace('k', '');
+        }
+
+        function switchTurn() {
+            turn = (turn === 'w') ? 'b' : 'w';
+        }
+
+        function undoMove() {
+            if (currentMoveIndex > 0) {
+                currentMoveIndex--;
+                loadFen(moveHistory[currentMoveIndex]);
+            }
+        }
+
+        function redoMove() {
+            if (currentMoveIndex < moveHistory.length - 1) {
+                currentMoveIndex++;
+                loadFen(moveHistory[currentMoveIndex]);
+            }
+        }
+
+        function updateUndoRedoButtons() {
+            undoButton.disabled = currentMoveIndex <= 0;
+            redoButton.disabled = currentMoveIndex >= moveHistory.length - 1;
+        }
+
+        function getValidMovesForPiece(row, col, currentBoard, currentEnPassant, currentCastling) {
+            const piece = currentBoard[row][col];
+            if (!piece) return [];
+            const pseudoValidMoves = getPseudoLegalMoves(row, col, currentBoard, currentEnPassant, currentCastling);
+            const legalMoves = [];
+            for (const move of pseudoValidMoves) {
+                const tempBoard = JSON.parse(JSON.stringify(currentBoard));
+                tempBoard[move.row][move.col] = piece;
+                tempBoard[row][col] = null;
+                if (!isKingInCheck(getPieceColor(piece), tempBoard)) {
+                    legalMoves.push(move);
+                }
+            }
+            return legalMoves;
+        }
+        
+        function getPseudoLegalMoves(row, col, b, ep, cr) {
+            const piece = b[row][col];
+            const color = getPieceColor(piece);
+            const moves = [];
+            const addMove = (r, c) => {
+                if (r >= 0 && r < 8 && c >= 0 && c < 8) {
+                    const targetPiece = b[r][c];
+                    if (targetPiece === null) {
+                        moves.push({ row: r, col: c });
+                        return true;
+                    } else if (getPieceColor(targetPiece) !== color) {
+                        moves.push({ row: r, col: c });
+                        return false;
+                    }
+                }
+                return false;
+            };
+            const addSlidingMoves = (directions) => {
+                for (const [dr, dc] of directions) {
+                    let r = row + dr, c = col + dc;
+                    while (addMove(r, c)) { r += dr; c += dc; }
+                }
+            };
+            switch (piece.toLowerCase()) {
+                case 'p':
+                    const dir = color === 'w' ? -1 : 1;
+                    const startRow = color === 'w' ? 6 : 1;
+                    if (b[row + dir] && b[row + dir][col] === null) {
+                        addMove(row + dir, col);
+                        if (row === startRow && b[row + 2 * dir][col] === null) { addMove(row + 2 * dir, col); }
+                    }
+                    [-1, 1].forEach(dc => {
+                        if (col + dc >= 0 && col + dc < 8 && b[row+dir]) {
+                            const targetPiece = b[row + dir][col + dc];
+                            if (targetPiece && getPieceColor(targetPiece) !== color) { addMove(row + dir, col + dc); }
+                        }
+                    });
+                    if (ep !== '-') {
+                        const epCol = FILES.indexOf(ep[0]);
+                        const epRow = 8 - parseInt(ep[1]);
+                        if (Math.abs(col - epCol) === 1 && row + dir === epRow) { addMove(epRow, epCol); }
+                    }
+                    break;
+                case 'n': const knightMoves = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]]; knightMoves.forEach(([dr, dc]) => addMove(row + dr, col + dc)); break;
+                case 'b': addSlidingMoves([[-1, -1], [-1, 1], [1, -1], [1, 1]]); break;
+                case 'r': addSlidingMoves([[-1, 0], [1, 0], [0, -1], [0, 1]]); break;
+                case 'q': addSlidingMoves([[-1, -1], [-1, 1], [1, -1], [1, 1], [-1, 0], [1, 0], [0, -1], [0, 1]]); break;
+                case 'k':
+                    const kingMoves = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+                    kingMoves.forEach(([dr, dc]) => addMove(row + dr, col + dc));
+                    const kingSide = color === 'w' ? 'K' : 'k';
+                    const queenSide = color === 'w' ? 'Q' : 'q';
+                    if (cr.includes(kingSide) && b[row][col+1] === null && b[row][col+2] === null && !isSquareAttacked({row, col}, color === 'w' ? 'b' : 'w', b) && !isSquareAttacked({row, col: col+1}, color === 'w' ? 'b' : 'w', b) && !isSquareAttacked({row, col: col+2}, color === 'w' ? 'b' : 'w', b)) { addMove(row, col + 2); }
+                    if (cr.includes(queenSide) && b[row][col-1] === null && b[row][col-2] === null && b[row][col-3] === null && !isSquareAttacked({row, col}, color === 'w' ? 'b' : 'w', b) && !isSquareAttacked({row, col: col-1}, color === 'w' ? 'b' : 'w', b) && !isSquareAttacked({row, col: col-2}, color === 'w' ? 'b' : 'w', b)) { addMove(row, col - 2); }
+                    break;
+            }
+            return moves;
+        }
+
+        function hasAnyValidMoves(color, currentBoard, currentEnPassant, currentCastling) {
+            for (let r = 0; r < 8; r++) { for (let c = 0; c < 8; c++) { if (getPieceColor(currentBoard[r][c]) === color) { if (getValidMovesForPiece(r, c, currentBoard, currentEnPassant, currentCastling).length > 0) { return true; } } } }
+            return false;
+        }
+        
+        function isSquareAttacked(square, attackerColor, currentBoard) {
+            for (let r = 0; r < 8; r++) { for (let c = 0; c < 8; c++) { const piece = currentBoard[r][c]; if (piece && getPieceColor(piece) === attackerColor) { const moves = getPseudoLegalMoves(r, c, currentBoard, '-', ''); if (piece.toLowerCase() === 'p') { const dir = getPieceColor(piece) === 'w' ? -1 : 1; if ( (square.row === r + dir && square.col === c + 1) || (square.row === r + dir && square.col === c - 1) ) { return true; } } else { if (moves.some(move => move.row === square.row && move.col === square.col)) { return true; } } } } }
+            return false;
+        }
+
+        function isKingInCheck(kingColor, currentBoard) {
+            const kingPos = findKing(kingColor, currentBoard);
+            if (!kingPos) return false;
+            const opponentColor = kingColor === 'w' ? 'b' : 'w';
+            return isSquareAttacked(kingPos, opponentColor, currentBoard);
+        }
+
+        function getPieceColor(piece) { if (!piece) return null; return piece === piece.toUpperCase() ? 'w' : 'b'; }
+
+        function findKing(color, currentBoard) {
+            const kingChar = color === 'w' ? 'K' : 'k';
+            for (let r = 0; r < 8; r++) { for (let c = 0; c < 8; c++) { if (currentBoard[r][c] === kingChar) { return { row: r, col: c }; } } }
+            return null;
+        }
+
+        boardElement.addEventListener('click', onSquareClick);
+        resetButton.addEventListener('click', () => {
+            initGame(true);
+        });
+        flipBoardButton.addEventListener('click', () => {
+            isBoardFlipped = !isBoardFlipped;
+            renderBoard();
+        });
+        undoButton.addEventListener('click', undoMove);
+        redoButton.addEventListener('click', redoMove);
+        playAgainButton.addEventListener('click', () => {
+            gameOverModal.classList.add('hidden');
+            initGame(true);
+        });
+        nextSongButton.addEventListener('click', playNextSongInPlaylist);
+        filterButton.addEventListener('click', () => {
+            document.body.classList.toggle('gameboy-filter');
+            renderBoard();
+        });
+        
+        initGame();
+    </script>
+</body>
+</html>
