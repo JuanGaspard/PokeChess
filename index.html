@@ -350,6 +350,12 @@
     </style>
 </head>
 <body>
+    <div id="loading-overlay" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="loading-message" class="text-2xl font-bold">Loading Sounds...</h2>
+        </div>
+    </div>
+
     <div id="game-container" class="game-container">
         <h1 class="pokemon-title text-5xl md:text-6xl text-center mb-4">
             <span class="text-title">PokéChess</span>
@@ -427,66 +433,8 @@
         </div>
     </div>
 
-    <!-- Audio elements -->
-    <audio id="cry-P" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/pikachu.ogg"></audio>
-    <audio id="cry-R" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/blastoise.ogg"></audio>
-    <audio id="cry-N" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/rapidash.mp3"></audio>
-    <audio id="cry-B" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/lucario.mp3"></audio>
-    <audio id="cry-Q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/lugia.mp3"></audio>
-    <audio id="cry-K" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/arceus.mp3"></audio>
-    <audio id="cry-p" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/mimikyu.mp3"></audio>
-    <audio id="cry-r" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/tyranitar.mp3"></audio>
-    <audio id="cry-n" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/zoroark.mp3"></audio>
-    <audio id="cry-b" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/gengar.mp3"></audio>
-    <audio id="cry-q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/mewtwo.mp3"></audio>
-    <audio id="cry-k" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/giratina.mp3"></audio>
-    <audio id="attack-P" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Thunder%20Wave%20part%202.mp3"></audio>
-    <audio id="attack-R" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/blastoise.ogg"></audio>
-    <audio id="attack-N" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Flame%20Wheel%20part%202.mp3"></audio>
-    <audio id="attack-B" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Comet%20Punch%201hit.mp3"></audio>
-    <audio id="attack-Q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Aerial%20Ace.mp3"></audio>
-    <audio id="attack-K" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Hyper%20Beam.mp3"></audio>
-    <audio id="attack-p" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Play%20Rough.mp3"></audio>
-    <audio id="attack-r" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Crunch.mp3"></audio>
-    <audio id="attack-n" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Night%20Shade.mp3"></audio>
-    <audio id="attack-b" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Shadow%20Ball.mp3"></audio>
-    <audio id="attack-q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Psyshock.mp3"></audio>
-    <audio id="attack-k" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Dragon%20Claw.mp3"></audio>
-    <audio id="check-sound" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/fx/check.mp3"></audio>
-    
-    <!-- Filter Mode Specific Sounds -->
-    <audio id="cry-p-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/meowth.mp3"></audio>
-    <audio id="attack-p-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Pay%20Day.mp3"></audio>
-    <audio id="cry-B-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/machamp.mp3"></audio>
-    <audio id="attack-B-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Dynamic%20Punch.mp3"></audio>
-    <audio id="cry-Q-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/articuno.mp3"></audio>
-    <audio id="attack-Q-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Ice%20Beam.mp3"></audio>
-    <audio id="cry-K-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/entei.mp3"></audio>
-    <audio id="attack-K-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Sacred%20Fire.mp3"></audio>
-    <audio id="cry-n-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/arcanine.mp3"></audio>
-    <audio id="attack-n-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Take%20Down.mp3"></audio>
-    <audio id="cry-r-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/rhydon.mp3"></audio>
-    <audio id="attack-r-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Earthquake.mp3"></audio>
-    <audio id="cry-k-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/feraligatr.mp3"></audio>
-    <audio id="attack-k-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Hydro%20Cannon.mp3"></audio>
-    
-    <audio id="battle-music" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-15.%20Battle%20(VS%20Trainer).mp3"></audio>
-    <audio id="battle-music-wild" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-07.%20Battle%20(VS%20Wild%20Pok%C3%A9mon).mp3"></audio>
-    <audio id="battle-music-gym" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-28.%20Battle%20(VS%20Gym%20Leader).mp3"></audio>
-    <audio id="battle-music-road" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-42.%20Victory%20Road.mp3"></audio>
-    <audio id="battle-music-rival" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-43.%20Last%20Battle%20(VS%20Rival).mp3"></audio>
-    <audio id="victory-music" loop src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-16.%20Victory%20(VS%20Trainer).mp3"></audio>
-    <audio id="victory-music-rocket" loop src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-36.%20Team%20Rocket%20Hideout.mp3"></audio>
-
-    <!-- New Johto Songs -->
-    <audio id="battle-music-johto-wild-day" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/17.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Day).mp3"></audio>
-    <audio id="battle-music-johto-wild-night" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/18.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Night).mp3"></audio>
-    <audio id="battle-music-johto-trainer" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/35.%20Battle!%20(Trainer%20Battle%20-%20Johto).mp3"></audio>
-    <audio id="battle-music-johto-rival" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/29.%20Battle!%20(Rival).mp3"></audio>
-    <audio id="battle-music-johto-rocket" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/56.%20Battle!%20(Team%20Rocket).mp3"></audio>
-
-
     <script>
+        // DOM Elements
         const boardElement = document.getElementById('board');
         const resetButton = document.getElementById('reset-button');
         const flipBoardButton = document.getElementById('flip-board-button');
@@ -497,123 +445,163 @@
         const gameOverModal = document.getElementById('game-over-modal');
         const gameOverMessage = document.getElementById('game-over-message');
         const playAgainButton = document.getElementById('play-again-button');
-        const checkSound = document.getElementById('check-sound');
         const nextSongButton = document.getElementById('next-song-button');
         const songTitleElement = document.getElementById('song-title');
         const gameContainer = document.getElementById('game-container');
         const filterButton = document.getElementById('filter-button');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingMessage = document.getElementById('loading-message');
+
+        // Web Audio API setup
+        let audioContext;
+        const audioBuffers = {};
+        let currentMusicSource = null;
+        let isAudioInitialized = false;
+        let isAudioLoading = false;
+
+        // Sound URLs
+        const SOUND_URLS = {
+            'cry-P': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/pikachu.ogg',
+            'cry-R': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/blastoise.ogg',
+            'cry-N': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/rapidash.mp3',
+            'cry-B': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/lucario.mp3',
+            'cry-Q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/lugia.mp3',
+            'cry-K': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/arceus.mp3',
+            'cry-p': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/mimikyu.mp3',
+            'cry-r': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/tyranitar.mp3',
+            'cry-n': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/zoroark.mp3',
+            'cry-b': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/gengar.mp3',
+            'cry-q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/mewtwo.mp3',
+            'cry-k': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/giratina.mp3',
+            'attack-P': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Thunder%20Wave%20part%202.mp3',
+            'attack-R': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/blastoise.ogg',
+            'attack-N': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Flame%20Wheel%20part%202.mp3',
+            'attack-B': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Comet%20Punch%201hit.mp3',
+            'attack-Q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Aerial%20Ace.mp3',
+            'attack-K': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Hyper%20Beam.mp3',
+            'attack-p': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Play%20Rough.mp3',
+            'attack-r': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Crunch.mp3',
+            'attack-n': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Night%20Shade.mp3',
+            'attack-b': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Shadow%20Ball.mp3',
+            'attack-q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Psyshock.mp3',
+            'attack-k': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Dragon%20Claw.mp3',
+            'check-sound': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/fx/check.mp3',
+            'cry-p-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/meowth.mp3',
+            'attack-p-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Pay%20Day.mp3',
+            'cry-B-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/machamp.mp3',
+            'attack-B-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Dynamic%20Punch.mp3',
+            'cry-Q-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/articuno.mp3',
+            'attack-Q-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Ice%20Beam.mp3',
+            'cry-K-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/entei.mp3',
+            'attack-K-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Sacred%20Fire.mp3',
+            'cry-n-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/arcanine.mp3',
+            'attack-n-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Take%20Down.mp3',
+            'cry-r-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/rhydon.mp3',
+            'attack-r-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Earthquake.mp3',
+            'cry-k-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/feraligatr.mp3',
+            'attack-k-filter': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Hydro%20Cannon.mp3',
+            'battle-music': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-15.%20Battle%20(VS%20Trainer).mp3',
+            'battle-music-wild': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-07.%20Battle%20(VS%20Wild%20Pok%C3%A9mon).mp3',
+            'battle-music-gym': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-28.%20Battle%20(VS%20Gym%20Leader).mp3',
+            'battle-music-road': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-42.%20Victory%20Road.mp3',
+            'battle-music-rival': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-43.%20Last%20Battle%20(VS%20Rival).mp3',
+            'victory-music': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-16.%20Victory%20(VS%20Trainer).mp3',
+            'victory-music-rocket': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-36.%20Team%20Rocket%20Hideout.mp3',
+            'battle-music-johto-wild-day': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/17.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Day).mp3',
+            'battle-music-johto-wild-night': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/18.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Night).mp3',
+            'battle-music-johto-trainer': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/35.%20Battle!%20(Trainer%20Battle%20-%20Johto).mp3',
+            'battle-music-johto-rival': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/29.%20Battle!%20(Rival).mp3',
+            'battle-music-johto-rocket': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/56.%20Battle!%20(Team%20Rocket).mp3'
+        };
         
-        const battleMusic = document.getElementById('battle-music');
-        const battleMusicWild = document.getElementById('battle-music-wild');
-        const battleMusicGym = document.getElementById('battle-music-gym');
-        const battleMusicRoad = document.getElementById('battle-music-road');
-        const battleMusicRival = document.getElementById('battle-music-rival');
-        const victoryMusic = document.getElementById('victory-music');
-        const victoryMusicRocket = document.getElementById('victory-music-rocket');
-
-        // New Johto Song elements
-        const battleMusicJohtoWildDay = document.getElementById('battle-music-johto-wild-day');
-        const battleMusicJohtoWildNight = document.getElementById('battle-music-johto-wild-night');
-        const battleMusicJohtoTrainer = document.getElementById('battle-music-johto-trainer');
-        const battleMusicJohtoRival = document.getElementById('battle-music-johto-rival');
-        const battleMusicJohtoRocket = document.getElementById('battle-music-johto-rocket');
-
-        const battleMusicPlaylist = [
-            battleMusic, 
-            battleMusicWild, 
-            battleMusicGym, 
-            battleMusicRoad, 
-            battleMusicRival,
-            battleMusicJohtoWildDay,
-            battleMusicJohtoWildNight,
-            battleMusicJohtoTrainer,
-            battleMusicJohtoRival,
-            battleMusicJohtoRocket
+        const battleMusicPlaylistKeys = [
+            'battle-music', 'battle-music-wild', 'battle-music-gym', 'battle-music-road', 'battle-music-rival',
+            'battle-music-johto-wild-day', 'battle-music-johto-wild-night', 'battle-music-johto-trainer',
+            'battle-music-johto-rival', 'battle-music-johto-rocket'
         ];
-        const allMusic = [...battleMusicPlaylist, victoryMusic, victoryMusicRocket];
         
-        let currentPlaylist = []; 
+        let currentPlaylistKeys = []; 
         let currentPlaylistIndex = 0;
 
-        const songTitles = new Map([
-            [battleMusic, "Battle (VS Trainer)"],
-            [battleMusicWild, "Battle (VS Wild Pokémon)"],
-            [battleMusicGym, "Battle (VS Gym Leader)"],
-            [battleMusicRoad, "Victory Road"],
-            [battleMusicRival, "Last Battle (VS Rival)"],
-            [battleMusicJohtoWildDay, "Battle! (Wild Pokémon - Johto - Day)"],
-            [battleMusicJohtoWildNight, "Battle! (Wild Pokémon - Johto - Night)"],
-            [battleMusicJohtoTrainer, "Battle! (Trainer Battle - Johto)"],
-            [battleMusicJohtoRival, "Battle! (Rival)"],
-            [battleMusicJohtoRocket, "Battle! (Team Rocket)"]
-        ]);
-
-        allMusic.forEach(audio => audio.volume = 0.2);
-
-        const pokemonCries = {
-            'P': document.getElementById('cry-P'), 'R': document.getElementById('cry-R'), 'N': document.getElementById('cry-N'), 'B': document.getElementById('cry-B'), 'Q': document.getElementById('cry-Q'), 'K': document.getElementById('cry-K'),
-            'p': document.getElementById('cry-p'), 'r': document.getElementById('cry-r'), 'n': document.getElementById('cry-n'), 'b': document.getElementById('cry-b'), 'q': document.getElementById('cry-q'), 'k': document.getElementById('cry-k'),
+        const songTitles = {
+            'battle-music': "Battle (VS Trainer)",
+            'battle-music-wild': "Battle (VS Wild Pokémon)",
+            'battle-music-gym': "Battle (VS Gym Leader)",
+            'battle-music-road': "Victory Road",
+            'battle-music-rival': "Last Battle (VS Rival)",
+            'battle-music-johto-wild-day': "Battle! (Wild Pokémon - Johto - Day)",
+            'battle-music-johto-wild-night': "Battle! (Wild Pokémon - Johto - Night)",
+            'battle-music-johto-trainer': "Battle! (Trainer Battle - Johto)",
+            'battle-music-johto-rival': "Battle! (Rival)",
+            'battle-music-johto-rocket': "Battle! (Team Rocket)"
         };
 
-        const pokemonAttackSounds = {
-            'P': document.getElementById('attack-P'), 'R': document.getElementById('attack-R'), 'N': document.getElementById('attack-N'), 'B': document.getElementById('attack-B'), 'Q': document.getElementById('attack-Q'), 'K': document.getElementById('attack-K'),
-            'p': document.getElementById('attack-p'), 'r': document.getElementById('attack-r'), 'n': document.getElementById('attack-n'), 'b': document.getElementById('attack-b'), 'q': document.getElementById('attack-q'), 'k': document.getElementById('attack-k'),
-        };
-        
-        const filterPokemonCries = {
-            'p': document.getElementById('cry-p-filter'),
-            'B': document.getElementById('cry-B-filter'),
-            'Q': document.getElementById('cry-Q-filter'),
-            'K': document.getElementById('cry-K-filter'),
-            'n': document.getElementById('cry-n-filter'),
-            'r': document.getElementById('cry-r-filter'),
-            'k': document.getElementById('cry-k-filter'),
-        };
-
-        const filterPokemonAttackSounds = {
-            'p': document.getElementById('attack-p-filter'),
-            'B': document.getElementById('attack-B-filter'),
-            'Q': document.getElementById('cry-Q-filter'),
-            'K': document.getElementById('cry-K-filter'),
-            'n': document.getElementById('attack-n-filter'),
-            'r': document.getElementById('attack-r-filter'),
-            'k': document.getElementById('attack-k-filter'),
-        };
-
-
+        // Game State
         const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         const POKEMON_SPRITES = { 'K': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/arceus.gif', 'Q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/lugia.gif', 'R': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/blastoise.gif', 'B': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/lucario.gif', 'N': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/rapidash.gif', 'P': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/pikachu.gif', 'k': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/giratina-origin.gif', 'q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/mewtwo.gif', 'r': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/tyranitar.gif', 'b': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/gengar.gif', 'n': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/zoroark.gif', 'p': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/mimikyu-busted.gif' };
-        
-        const POKEMON_SPRITES_STATIC = { 
-            'K': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/entei.png', // Entei
-            'Q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/articuno.png', // Articuno
-            'R': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/blastoise.png',  // Blastoise
-            'B': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/machamp.png',  // Machamp
-            'N': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/rapidash.png',  // Rapidash
-            'P': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/pikachu.png',  // Pikachu
-            'k': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/feligatr.png', // Feraligatr
-            'q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/mewtwo.png', // Mewtwo
-            'r': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/rhydon.png', // Rhydon
-            'b': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/gengar.png',  // Gengar
-            'n': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/arcanine.png',  // Arcanine
-            'p': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/meowth.png'  // Meowth
-        };
-
+        const POKEMON_SPRITES_STATIC = { 'K': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/entei.png', 'Q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/articuno.png', 'R': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/blastoise.png', 'B': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/machamp.png', 'N': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/rapidash.png', 'P': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/pikachu.png', 'k': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/feligatr.png', 'q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/mewtwo.png', 'r': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/rhydon.png', 'b': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/gengar.png', 'n': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/arcanine.png', 'p': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/meowth.png' };
         const STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
-        let moveHistory = [];
-        let currentMoveIndex = -1;
-        let board = [];
-        let turn = 'w';
-        let selectedPiece = null;
-        let validMoves = [];
-        let enPassantTarget = '-';
-        let castlingRights = 'KQkq';
-        let lastMove = null;
-        let isBoardFlipped = false;
-        let isAnimating = false;
-        let isMusicStarted = false;
+        let moveHistory = [], currentMoveIndex = -1, board = [], turn = 'w', selectedPiece = null, validMoves = [], enPassantTarget = '-', castlingRights = 'KQkq', lastMove = null, isBoardFlipped = false, isAnimating = false, isMusicStarted = false;
 
+        // --- WEB AUDIO API FUNCTIONS ---
+        async function initAudio() {
+            if (isAudioInitialized || isAudioLoading) return;
+            isAudioLoading = true;
+            loadingOverlay.classList.remove('hidden');
+            
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+
+                const soundPromises = Object.entries(SOUND_URLS).map(([name, url]) =>
+                    fetch(url)
+                        .then(response => response.arrayBuffer())
+                        .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                        .then(decodedData => {
+                            audioBuffers[name] = decodedData;
+                        })
+                        .catch(err => console.error(`Failed to load sound: ${name}`, err))
+                );
+
+                await Promise.all(soundPromises);
+                isAudioInitialized = true;
+            } catch (e) {
+                console.error("Could not initialize Web Audio API", e);
+                loadingMessage.innerText = "Audio failed to load.";
+                // Hide after a delay even if it fails
+                setTimeout(() => loadingOverlay.classList.add('hidden'), 2000);
+                return;
+            } finally {
+                isAudioLoading = false;
+            }
+            
+            loadingOverlay.classList.add('hidden');
+        }
+
+        function playSound(bufferKey, loop = false, onEndedCallback = null) {
+            if (!isAudioInitialized || !audioBuffers[bufferKey]) return null;
+
+            const source = audioContext.createBufferSource();
+            source.buffer = audioBuffers[bufferKey];
+            source.loop = loop;
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            
+            source.connect(gainNode).connect(audioContext.destination);
+            source.start(0);
+
+            if (onEndedCallback) {
+                source.onended = onEndedCallback;
+            }
+
+            return source;
+        }
+
+        // --- MUSIC HANDLING ---
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -622,83 +610,67 @@
         }
 
         function stopAllMusic() {
-            allMusic.forEach(audio => {
-                audio.pause();
-                audio.currentTime = 0;
-            });
+            if (currentMusicSource) {
+                currentMusicSource.onended = null; // Prevent ended callback from firing on manual stop
+                currentMusicSource.stop();
+                currentMusicSource = null;
+            }
             songTitleElement.textContent = '';
         }
-        
+
         function updateSongTitleDisplay() {
-            const currentSong = currentPlaylist[currentPlaylistIndex];
-            songTitleElement.textContent = songTitles.get(currentSong) || '';
+            const currentSongKey = currentPlaylistKeys[currentPlaylistIndex];
+            songTitleElement.textContent = songTitles[currentSongKey] || '';
         }
 
         function playNextSongInPlaylist() {
-            if (currentPlaylist.length > 0) {
-                 currentPlaylist[currentPlaylistIndex].pause();
-                 currentPlaylist[currentPlaylistIndex].currentTime = 0;
+            if (currentMusicSource) {
+                currentMusicSource.stop();
             }
             
             currentPlaylistIndex++;
-            if (currentPlaylistIndex >= currentPlaylist.length) {
-                currentPlaylistIndex = 0;
+            if (currentPlaylistIndex >= currentPlaylistKeys.length) {
+                currentPlaylistIndex = 0; // Loop playlist
             }
 
-            if (currentPlaylist.length > 0) {
-                const nextSong = currentPlaylist[currentPlaylistIndex];
-                const title = songTitles.get(nextSong) || '';
-
-                if (title.includes('Battle!')) {
-                    nextSong.currentTime = 2.5;
-                } else if (title.includes('Battle')) {
-                    nextSong.currentTime = 3.5;
-                } else {
-                    nextSong.currentTime = 0;
-                }
-
-                nextSong.play();
+            if (currentPlaylistKeys.length > 0) {
+                const nextSongKey = currentPlaylistKeys[currentPlaylistIndex];
+                currentMusicSource = playSound(nextSongKey, false, playNextSongInPlaylist);
                 updateSongTitleDisplay();
             }
         }
-        
+
         function startInitialPlaylist() {
             stopAllMusic();
-            const firstSong = battleMusic;
-            const otherSongs = battleMusicPlaylist.filter(song => song !== firstSong);
-            shuffleArray(otherSongs);
-            currentPlaylist = [firstSong, ...otherSongs];
+            const firstSongKey = 'battle-music';
+            const otherSongKeys = battleMusicPlaylistKeys.filter(key => key !== firstSongKey);
+            shuffleArray(otherSongKeys);
+            currentPlaylistKeys = [firstSongKey, ...otherSongKeys];
             
             currentPlaylistIndex = 0;
-            currentPlaylist[0].currentTime = 0;
-            currentPlaylist[0].play();
+            currentMusicSource = playSound(currentPlaylistKeys[0], false, playNextSongInPlaylist);
             updateSongTitleDisplay();
         }
 
         function startRandomPlaylist() {
             stopAllMusic();
-            const shuffledPlaylist = [...battleMusicPlaylist];
+            const shuffledPlaylist = [...battleMusicPlaylistKeys];
             shuffleArray(shuffledPlaylist);
-            currentPlaylist = shuffledPlaylist;
+            currentPlaylistKeys = shuffledPlaylist;
 
             currentPlaylistIndex = 0;
-            currentPlaylist[0].currentTime = 0;
-            currentPlaylist[0].play();
+            currentMusicSource = playSound(currentPlaylistKeys[0], false, playNextSongInPlaylist);
             updateSongTitleDisplay();
         }
-        
-        battleMusicPlaylist.forEach(song => {
-            song.addEventListener('ended', playNextSongInPlaylist);
-        });
 
-
+        // --- GAME LOGIC ---
         function initGame(isFromResetButton = false) {
             moveHistory = [STARTING_FEN];
             currentMoveIndex = 0;
-            isMusicStarted = false;
             stopAllMusic();
+            isMusicStarted = false;
             
-            if (isFromResetButton) {
+            if (isFromResetButton && isAudioInitialized) {
                 startRandomPlaylist();
                 isMusicStarted = true;
             }
@@ -923,20 +895,18 @@
 
             // --- Sound Logic ---
             const isFilterActive = document.body.classList.contains('gameboy-filter');
-            let crySound = pokemonCries[piece];
-            let attackSound = pokemonAttackSounds[piece];
+            let cryKey = `cry-${piece}`;
+            let attackKey = `attack-${piece}`;
 
             if (isFilterActive) {
-                crySound = filterPokemonCries[piece] || pokemonCries[piece];
-                attackSound = filterPokemonAttackSounds[piece] || pokemonAttackSounds[piece];
+                cryKey = `cry-${piece}-filter` in SOUND_URLS ? `cry-${piece}-filter` : cryKey;
+                attackKey = `attack-${piece}-filter` in SOUND_URLS ? `attack-${piece}-filter` : attackKey;
             }
 
-            if ((capturedPiece || isEnPassant) && attackSound) {
-                attackSound.currentTime = 0;
-                attackSound.play();
-            } else if (crySound) {
-                crySound.currentTime = 0;
-                crySound.play();
+            if (capturedPiece || isEnPassant) {
+                playSound(attackKey);
+            } else {
+                playSound(cryKey);
             }
             // --- End Sound Logic ---
 
@@ -1003,12 +973,10 @@
         }
 
         function performMove(from, to, promotionPiece = null) {
-            // --- Start Music on First Move ---
-            if (!isMusicStarted) {
+            if (!isMusicStarted && isAudioInitialized) {
                 startInitialPlaylist();
                 isMusicStarted = true;
             }
-            // --- End Music Logic ---
 
             const piece = board[from.row][from.col];
             const enPassantCol = enPassantTarget !== '-' ? FILES.indexOf(enPassantTarget[0]) : -1;
@@ -1057,8 +1025,7 @@
             const hasMoves = hasAnyValidMoves(turn, board, enPassantTarget, castlingRights);
 
             if (inCheck && hasMoves) {
-                checkSound.currentTime = 0;
-                checkSound.play();
+                playSound('check-sound');
             }
 
             if (!hasMoves) {
@@ -1099,11 +1066,11 @@
             if (winner === 'w') {
                 gameOverMessage.innerText = 'Team Ash Wins!';
                 gameOverMessage.className = 'game-over-title text-3xl mb-6 text-white-victory';
-                victoryMusic.play();
+                currentMusicSource = playSound('victory-music', true);
             } else if (winner === 'b') {
                 gameOverMessage.innerText = 'Team Rocket Wins!';
                 gameOverMessage.className = 'game-over-title text-3xl mb-6 text-red-victory';
-                victoryMusicRocket.play();
+                currentMusicSource = playSound('victory-music-rocket', true);
             } else {
                 gameOverMessage.innerText = 'Stalemate!';
                 gameOverMessage.className = 'game-over-title text-3xl mb-6 text-draw';
@@ -1242,6 +1209,11 @@
             for (let r = 0; r < 8; r++) { for (let c = 0; c < 8; c++) { if (currentBoard[r][c] === kingChar) { return { row: r, col: c }; } } }
             return null;
         }
+
+        // --- EVENT LISTENERS ---
+        // Initialize audio on the first user interaction
+        document.body.addEventListener('click', initAudio, { once: true });
+        document.body.addEventListener('touchstart', initAudio, { once: true });
 
         boardElement.addEventListener('click', onSquareClick);
         resetButton.addEventListener('click', () => {
