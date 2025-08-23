@@ -458,6 +458,7 @@
         let currentMusicSource = null;
         let isAudioInitialized = false;
         let isAudioLoading = false;
+        let canSkipSong = true; // Debounce flag for the next song button
 
         // Sound URLs
         const SOUND_URLS = {
@@ -601,7 +602,8 @@
             }
         }
 
-        function playSound(bufferKey, loop = false, onEndedCallback = null) {
+        function playSound(bufferKey, options = {}) {
+            const { loop = false, onEnded = null, startTime = 0 } = options;
             if (!isAudioInitialized || !audioBuffers[bufferKey]) return null;
 
             const source = audioContext.createBufferSource();
@@ -612,10 +614,10 @@
             gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
             
             source.connect(gainNode).connect(audioContext.destination);
-            source.start(0);
+            source.start(0, startTime); // Use the startTime offset here
 
-            if (onEndedCallback) {
-                source.onended = onEndedCallback;
+            if (onEnded) {
+                source.onended = onEnded;
             }
 
             return source;
@@ -642,12 +644,9 @@
             const currentSongKey = currentPlaylistKeys[currentPlaylistIndex];
             songTitleElement.textContent = songTitles[currentSongKey] || '';
         }
-
-        function playNextSongInPlaylist() {
-            if (currentMusicSource) {
-                currentMusicSource.stop();
-            }
-            
+        
+        // This function is for when a song ends naturally and the next one should play.
+        function advancePlaylist() {
             currentPlaylistIndex++;
             if (currentPlaylistIndex >= currentPlaylistKeys.length) {
                 currentPlaylistIndex = 0; // Loop playlist
@@ -655,10 +654,38 @@
 
             if (currentPlaylistKeys.length > 0) {
                 const nextSongKey = currentPlaylistKeys[currentPlaylistIndex];
-                currentMusicSource = playSound(nextSongKey, false, playNextSongInPlaylist);
+                const title = songTitles[nextSongKey] || '';
+                let startTime = 0;
+                if (title.includes('Battle!')) {
+                    startTime = 2.5;
+                } else if (title.includes('Battle')) {
+                    startTime = 3.5;
+                }
+                
+                currentMusicSource = playSound(nextSongKey, { onEnded: advancePlaylist, startTime: startTime });
                 updateSongTitleDisplay();
             }
         }
+
+        // This function is for the button click to manually skip to the next song.
+        function skipToNextSong() {
+            if (!isAudioInitialized || !canSkipSong) return;
+
+            canSkipSong = false; // Disable button temporarily
+
+            if (currentMusicSource) {
+                currentMusicSource.onended = null; // CRITICAL: Remove the listener to prevent double skip
+                currentMusicSource.stop();
+            }
+            // Now call the advance function to play the next song
+            advancePlaylist();
+
+            // Re-enable the button after a short delay
+            setTimeout(() => {
+                canSkipSong = true;
+            }, 500);
+        }
+
 
         function startInitialPlaylist() {
             stopAllMusic();
@@ -668,7 +695,7 @@
             currentPlaylistKeys = [firstSongKey, ...otherSongKeys];
             
             currentPlaylistIndex = 0;
-            currentMusicSource = playSound(currentPlaylistKeys[0], false, playNextSongInPlaylist);
+            currentMusicSource = playSound(currentPlaylistKeys[0], { onEnded: advancePlaylist, startTime: 0 });
             updateSongTitleDisplay();
         }
 
@@ -679,7 +706,7 @@
             currentPlaylistKeys = shuffledPlaylist;
 
             currentPlaylistIndex = 0;
-            currentMusicSource = playSound(currentPlaylistKeys[0], false, playNextSongInPlaylist);
+            currentMusicSource = playSound(currentPlaylistKeys[0], { onEnded: advancePlaylist, startTime: 0 });
             updateSongTitleDisplay();
         }
 
@@ -1086,11 +1113,11 @@
             if (winner === 'w') {
                 gameOverMessage.innerText = 'Team Ash Wins!';
                 gameOverMessage.className = 'game-over-title text-3xl mb-6 text-white-victory';
-                currentMusicSource = playSound('victory-music', true);
+                currentMusicSource = playSound('victory-music', { loop: true });
             } else if (winner === 'b') {
                 gameOverMessage.innerText = 'Team Rocket Wins!';
                 gameOverMessage.className = 'game-over-title text-3xl mb-6 text-red-victory';
-                currentMusicSource = playSound('victory-music-rocket', true);
+                currentMusicSource = playSound('victory-music-rocket', { loop: true });
             } else {
                 gameOverMessage.innerText = 'Stalemate!';
                 gameOverMessage.className = 'game-over-title text-3xl mb-6 text-draw';
@@ -1249,7 +1276,7 @@
             gameOverModal.classList.add('hidden');
             initGame(true);
         });
-        nextSongButton.addEventListener('click', playNextSongInPlaylist);
+        nextSongButton.addEventListener('click', skipToNextSong);
         filterButton.addEventListener('click', () => {
             document.body.classList.toggle('gameboy-filter');
             renderBoard();
