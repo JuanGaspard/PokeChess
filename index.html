@@ -545,40 +545,60 @@
         let moveHistory = [], currentMoveIndex = -1, board = [], turn = 'w', selectedPiece = null, validMoves = [], enPassantTarget = '-', castlingRights = 'KQkq', lastMove = null, isBoardFlipped = false, isAnimating = false, isMusicStarted = false;
 
         // --- WEB AUDIO API FUNCTIONS ---
-        async function initAudio() {
+        async function unlockAndLoadAudio() {
+            // Prevent multiple initializations
             if (isAudioInitialized || isAudioLoading) return;
-            isAudioLoading = true;
-            loadingOverlay.classList.remove('hidden');
-            
+
+            // Part 1: Unlock Audio Context (must be synchronous within the user event)
             try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                // On iOS, the context starts in a suspended state and must be resumed by a user gesture.
                 if (audioContext.state === 'suspended') {
                     await audioContext.resume();
                 }
+            } catch (e) {
+                console.error("AudioContext could not be created or resumed.", e);
+                loadingMessage.innerText = "Audio Not Supported.";
+                loadingOverlay.classList.remove('hidden');
+                setTimeout(() => loadingOverlay.classList.add('hidden'), 2000);
+                return; // Can't proceed without the audio context.
+            }
 
-                const soundPromises = Object.entries(SOUND_URLS).map(([name, url]) =>
-                    fetch(url)
-                        .then(response => response.arrayBuffer())
-                        .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-                        .then(decodedData => {
-                            audioBuffers[name] = decodedData;
-                        })
-                        .catch(err => console.error(`Failed to load sound: ${name}`, err))
-                );
+            // Part 2: Asynchronously load all sounds now that the context is unlocked.
+            isAudioLoading = true;
+            loadingOverlay.classList.remove('hidden');
+            loadingMessage.innerText = "Loading Sounds...";
 
+            try {
+                // Create an array of promises, one for each sound file.
+                const soundPromises = Object.entries(SOUND_URLS).map(async ([name, url]) => {
+                    try {
+                        const response = await fetch(url);
+                        const arrayBuffer = await response.arrayBuffer();
+                        const decodedData = await audioContext.decodeAudioData(arrayBuffer);
+                        audioBuffers[name] = decodedData;
+                    } catch (err) {
+                        // Log error for a specific sound, but don't stop the whole process.
+                        console.error(`Failed to load sound: ${name} from ${url}`, err);
+                    }
+                });
+
+                // Wait for all sound loading promises to complete (or fail individually).
                 await Promise.all(soundPromises);
                 isAudioInitialized = true;
             } catch (e) {
-                console.error("Could not initialize Web Audio API", e);
-                loadingMessage.innerText = "Audio failed to load.";
-                // Hide after a delay even if it fails
-                setTimeout(() => loadingOverlay.classList.add('hidden'), 2000);
-                return;
+                console.error("An error occurred during the sound loading process.", e);
+                loadingMessage.innerText = "Some sounds failed to load.";
+                 setTimeout(() => loadingOverlay.classList.add('hidden'), 2000);
             } finally {
                 isAudioLoading = false;
+                // Only hide the overlay if initialization was successful.
+                if (isAudioInitialized) {
+                   loadingOverlay.classList.add('hidden');
+                }
             }
-            
-            loadingOverlay.classList.add('hidden');
         }
 
         function playSound(bufferKey, loop = false, onEndedCallback = null) {
@@ -851,7 +871,7 @@
         }
 
         function onSquareClick(event) {
-            if (isAnimating) return;
+            if (isAnimating || !isAudioInitialized) return;
             const square = event.target.closest('.square');
             if (!square) return;
             const row = parseInt(square.dataset.row);
@@ -1211,9 +1231,9 @@
         }
 
         // --- EVENT LISTENERS ---
-        // Initialize audio on the first user interaction
-        document.body.addEventListener('click', initAudio, { once: true });
-        document.body.addEventListener('touchstart', initAudio, { once: true });
+        // Initialize audio on the first user interaction anywhere on the page.
+        document.body.addEventListener('click', unlockAndLoadAudio, { once: true });
+        document.body.addEventListener('touchstart', unlockAndLoadAudio, { once: true });
 
         boardElement.addEventListener('click', onSquareClick);
         resetButton.addEventListener('click', () => {
