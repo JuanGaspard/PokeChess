@@ -51,13 +51,13 @@
             box-shadow: none;
         }
         .gameboy-filter .light { 
-            background-image: url('https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/PKC-Grey-Square.jpg');
+            background-image: url('https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/PKC-Grey-Square.jpg');
             background-size: cover;
             background-position: center;
             background-color: #C8C8D1 !important; 
         }
         .gameboy-filter .dark {
-            background-image: url('https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/PKC-Red-Square.jpg');
+            background-image: url('https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/PKC-Red-Square.jpg');
             background-size: cover;
             background-position: center;
             background-color: #d59a9a !important; /* Fallback color */
@@ -353,7 +353,7 @@
     <div id="game-container" class="game-container">
         <h1 class="pokemon-title text-5xl md:text-6xl text-center mb-4">
             <span class="text-title">PokéChess</span>
-            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/title.png" class="image-title mx-auto" alt="PokéChess">
+            <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/title.png" class="image-title mx-auto" alt="PokéChess">
         </h1>
         
         <div class="relative w-full" style="padding-top: 100%;">
@@ -365,15 +365,15 @@
                 <button id="reset-button" class="pokemon-button">
                     <span class="text-button">New Game</span>
                     <div class="image-button hidden flex-col items-center space-y-1">
-                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/new.png" alt="New">
-                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/game.png" alt="Game">
+                        <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/new.png" alt="New">
+                        <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/game.png" alt="Game">
                     </div>
                 </button>
                 <button id="flip-board-button" class="pokemon-button">
                     <span class="text-button">Flip Board</span>
                     <div class="image-button hidden flex-col items-center space-y-1">
-                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/flip.png" alt="Flip">
-                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/board.png" alt="Board">
+                        <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/flip.png" alt="Flip">
+                        <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/board.png" alt="Board">
                     </div>
                 </button>
                 <button id="next-song-button" class="pokemon-button icon-button">
@@ -383,28 +383,28 @@
                         </svg>
                     </span>
                     <div class="image-button hidden flex-col items-center">
-                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/music.png" alt="Music">
+                        <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/music.png" alt="Music">
                     </div>
                 </button>
                 <button id="filter-button" class="pokemon-button icon-button">
-                       <span class="text-button">
-                           <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-button.png" alt="Filter" class="h-8">
-                       </span>
-                       <div class="image-button hidden flex-col items-center">
-                            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/filter.png" alt="Filter">
-                       </div>
+                        <span class="text-button">
+                            <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-button.png" alt="Filter" class="h-8">
+                        </span>
+                        <div class="image-button hidden flex-col items-center">
+                             <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/filter.png" alt="Filter">
+                        </div>
                 </button>
                 <div class="undo-redo-wrapper flex items-stretch">
                     <button id="undo-button" class="pokemon-button">
                         <span class="text-button">Undo</span>
                         <div class="image-button hidden flex-col items-center">
-                            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/undo.png" alt="Undo">
+                            <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/undo.png" alt="Undo">
                         </div>
                     </button>
                     <button id="redo-button" class="pokemon-button">
                         <span class="text-button">Redo</span>
                         <div class="image-button hidden flex-col items-center">
-                            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/redo.png" alt="Redo">
+                            <img src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/board/filter-text/redo.png" alt="Redo">
                         </div>
                     </button>
                 </div>
@@ -428,62 +428,62 @@
     </div>
 
     <!-- Audio elements -->
-    <audio id="cry-P" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/pikachu.ogg"></audio>
-    <audio id="cry-R" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/blastoise.ogg"></audio>
-    <audio id="cry-N" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/rapidash.mp3"></audio>
-    <audio id="cry-B" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/lucario.mp3"></audio>
-    <audio id="cry-Q" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/lugia.mp3"></audio>
-    <audio id="cry-K" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/arceus.mp3"></audio>
-    <audio id="cry-p" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/mimikyu.mp3"></audio>
-    <audio id="cry-r" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/tyranitar.mp3"></audio>
-    <audio id="cry-n" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/zoroark.mp3"></audio>
-    <audio id="cry-b" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/gengar.mp3"></audio>
-    <audio id="cry-q" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/mewtwo.mp3"></audio>
-    <audio id="cry-k" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/giratina.mp3"></audio>
-    <audio id="attack-P" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Thunder%20Wave%20part%202.mp3"></audio>
-    <audio id="attack-R" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/blastoise.ogg"></audio>
-    <audio id="attack-N" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Flame%20Wheel%20part%202.mp3"></audio>
-    <audio id="attack-B" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Comet%20Punch%201hit.mp3"></audio>
-    <audio id="attack-Q" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Aerial%20Ace.mp3"></audio>
-    <audio id="attack-K" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Hyper%20Beam.mp3"></audio>
-    <audio id="attack-p" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Play%20Rough.mp3"></audio>
-    <audio id="attack-r" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Crunch.mp3"></audio>
-    <audio id="attack-n" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Night%20Shade.mp3"></audio>
-    <audio id="attack-b" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Shadow%20Ball.mp3"></audio>
-    <audio id="attack-q" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Psyshock.mp3"></audio>
-    <audio id="attack-k" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/pokemon/Dragon%20Claw.mp3"></audio>
-    <audio id="check-sound" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/fx/check.mp3"></audio>
+    <audio id="cry-P" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/pikachu.ogg"></audio>
+    <audio id="cry-R" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/blastoise.ogg"></audio>
+    <audio id="cry-N" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/rapidash.mp3"></audio>
+    <audio id="cry-B" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/lucario.mp3"></audio>
+    <audio id="cry-Q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/lugia.mp3"></audio>
+    <audio id="cry-K" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/arceus.mp3"></audio>
+    <audio id="cry-p" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/mimikyu.mp3"></audio>
+    <audio id="cry-r" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/tyranitar.mp3"></audio>
+    <audio id="cry-n" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/zoroark.mp3"></audio>
+    <audio id="cry-b" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/gengar.mp3"></audio>
+    <audio id="cry-q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/mewtwo.mp3"></audio>
+    <audio id="cry-k" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/giratina.mp3"></audio>
+    <audio id="attack-P" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Thunder%20Wave%20part%202.mp3"></audio>
+    <audio id="attack-R" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/blastoise.ogg"></audio>
+    <audio id="attack-N" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Flame%20Wheel%20part%202.mp3"></audio>
+    <audio id="attack-B" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Comet%20Punch%201hit.mp3"></audio>
+    <audio id="attack-Q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Aerial%20Ace.mp3"></audio>
+    <audio id="attack-K" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Hyper%20Beam.mp3"></audio>
+    <audio id="attack-p" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Play%20Rough.mp3"></audio>
+    <audio id="attack-r" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Crunch.mp3"></audio>
+    <audio id="attack-n" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Night%20Shade.mp3"></audio>
+    <audio id="attack-b" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Shadow%20Ball.mp3"></audio>
+    <audio id="attack-q" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Psyshock.mp3"></audio>
+    <audio id="attack-k" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/pokemon/Dragon%20Claw.mp3"></audio>
+    <audio id="check-sound" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/fx/check.mp3"></audio>
     
     <!-- Filter Mode Specific Sounds -->
-    <audio id="cry-p-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/meowth.mp3"></audio>
-    <audio id="attack-p-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/Pay%20Day.mp3"></audio>
-    <audio id="cry-B-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/machamp.mp3"></audio>
-    <audio id="attack-B-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/Dynamic%20Punch.mp3"></audio>
-    <audio id="cry-Q-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/articuno.mp3"></audio>
-    <audio id="attack-Q-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/Ice%20Beam.mp3"></audio>
-    <audio id="cry-K-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/entei.mp3"></audio>
-    <audio id="attack-K-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/Sacred%20Fire.mp3"></audio>
-    <audio id="cry-n-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/arcanine.mp3"></audio>
-    <audio id="attack-n-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/Take%20Down.mp3"></audio>
-    <audio id="cry-r-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/rhydon.mp3"></audio>
-    <audio id="attack-r-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/Earthquake.mp3"></audio>
-    <audio id="cry-k-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/feraligatr.mp3"></audio>
-    <audio id="attack-k-filter" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/old%20pokemon/Hydro%20Cannon.mp3"></audio>
+    <audio id="cry-p-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/meowth.mp3"></audio>
+    <audio id="attack-p-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Pay%20Day.mp3"></audio>
+    <audio id="cry-B-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/machamp.mp3"></audio>
+    <audio id="attack-B-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Dynamic%20Punch.mp3"></audio>
+    <audio id="cry-Q-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/articuno.mp3"></audio>
+    <audio id="attack-Q-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Ice%20Beam.mp3"></audio>
+    <audio id="cry-K-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/entei.mp3"></audio>
+    <audio id="attack-K-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Sacred%20Fire.mp3"></audio>
+    <audio id="cry-n-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/arcanine.mp3"></audio>
+    <audio id="attack-n-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Take%20Down.mp3"></audio>
+    <audio id="cry-r-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/rhydon.mp3"></audio>
+    <audio id="attack-r-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Earthquake.mp3"></audio>
+    <audio id="cry-k-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/feraligatr.mp3"></audio>
+    <audio id="attack-k-filter" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/old%20pokemon/Hydro%20Cannon.mp3"></audio>
     
-    <audio id="battle-music" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/1-15.%20Battle%20(VS%20Trainer).mp3"></audio>
-    <audio id="battle-music-wild" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/1-07.%20Battle%20(VS%20Wild%20Pok%C3%A9mon).mp3"></audio>
-    <audio id="battle-music-gym" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/1-28.%20Battle%20(VS%20Gym%20Leader).mp3"></audio>
-    <audio id="battle-music-road" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/1-42.%20Victory%20Road.mp3"></audio>
-    <audio id="battle-music-rival" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/1-43.%20Last%20Battle%20(VS%20Rival).mp3"></audio>
-    <audio id="victory-music" loop src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/1-16.%20Victory%20(VS%20Trainer).mp3"></audio>
-    <audio id="victory-music-rocket" loop src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/1-36.%20Team%20Rocket%20Hideout.mp3"></audio>
+    <audio id="battle-music" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-15.%20Battle%20(VS%20Trainer).mp3"></audio>
+    <audio id="battle-music-wild" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-07.%20Battle%20(VS%20Wild%20Pok%C3%A9mon).mp3"></audio>
+    <audio id="battle-music-gym" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-28.%20Battle%20(VS%20Gym%20Leader).mp3"></audio>
+    <audio id="battle-music-road" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-42.%20Victory%20Road.mp3"></audio>
+    <audio id="battle-music-rival" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-43.%20Last%20Battle%20(VS%20Rival).mp3"></audio>
+    <audio id="victory-music" loop src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-16.%20Victory%20(VS%20Trainer).mp3"></audio>
+    <audio id="victory-music-rocket" loop src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/1-36.%20Team%20Rocket%20Hideout.mp3"></audio>
 
     <!-- New Johto Songs -->
-    <audio id="battle-music-johto-wild-day" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/17.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Day).mp3"></audio>
-    <audio id="battle-music-johto-wild-night" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/18.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Night).mp3"></audio>
-    <audio id="battle-music-johto-trainer" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/35.%20Battle!%20(Trainer%20Battle%20-%20Johto).mp3"></audio>
-    <audio id="battle-music-johto-rival" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/29.%20Battle!%20(Rival).mp3"></audio>
-    <audio id="battle-music-johto-rocket" src="https://github.com/JuanGaspard/PokeChess/blob/main/sounds/music/56.%20Battle!%20(Team%20Rocket).mp3"></audio>
+    <audio id="battle-music-johto-wild-day" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/17.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Day).mp3"></audio>
+    <audio id="battle-music-johto-wild-night" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/18.%20Battle!%20(Wild%20Pok%C3%A9mon%20-%20Johto%20-%20Night).mp3"></audio>
+    <audio id="battle-music-johto-trainer" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/35.%20Battle!%20(Trainer%20Battle%20-%20Johto).mp3"></audio>
+    <audio id="battle-music-johto-rival" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/29.%20Battle!%20(Rival).mp3"></audio>
+    <audio id="battle-music-johto-rocket" src="https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sounds/music/56.%20Battle!%20(Team%20Rocket).mp3"></audio>
 
 
     <script>
@@ -582,21 +582,21 @@
 
 
         const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-        const POKEMON_SPRITES = { 'K': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/arceus.gif', 'Q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/lugia.gif', 'R': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/blastoise.gif', 'B': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/lucario.gif', 'N': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/rapidash.gif', 'P': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/pikachu.gif', 'k': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/giratina-origin.gif', 'q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/mewtwo.gif', 'r': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/tyranitar.gif', 'b': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/gengar.gif', 'n': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/zoroark.gif', 'p': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/mimikyu-busted.gif' };
+        const POKEMON_SPRITES = { 'K': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/arceus.gif', 'Q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/lugia.gif', 'R': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/blastoise.gif', 'B': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/lucario.gif', 'N': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/rapidash.gif', 'P': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/pikachu.gif', 'k': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/giratina-origin.gif', 'q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/mewtwo.gif', 'r': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/tyranitar.gif', 'b': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/gengar.gif', 'n': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/zoroark.gif', 'p': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/animated/mimikyu-busted.gif' };
         
         const POKEMON_SPRITES_STATIC = { 
-            'K': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/entei.png', // Entei
-            'Q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/articuno.png', // Articuno
-            'R': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/blastoise.png',  // Blastoise
-            'B': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/machamp.png',  // Machamp
-            'N': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/rapidash.png',  // Rapidash
-            'P': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/pikachu.png',  // Pikachu
-            'k': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/feligatr.png', // Feraligatr
-            'q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/mewtwo.png', // Mewtwo
-            'r': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/rhydon.png', // Rhydon
-            'b': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/gengar.png',  // Gengar
-            'n': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/arcanine.png',  // Arcanine
-            'p': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/meowth.png'  // Meowth
+            'K': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/entei.png', // Entei
+            'Q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/articuno.png', // Articuno
+            'R': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/blastoise.png',  // Blastoise
+            'B': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/machamp.png',  // Machamp
+            'N': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/rapidash.png',  // Rapidash
+            'P': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/pikachu.png',  // Pikachu
+            'k': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/feligatr.png', // Feraligatr
+            'q': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/mewtwo.png', // Mewtwo
+            'r': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/rhydon.png', // Rhydon
+            'b': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/gengar.png',  // Gengar
+            'n': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/arcanine.png',  // Arcanine
+            'p': 'https://raw.githubusercontent.com/JuanGaspard/PokeChess/main/sprites/old/meowth.png'  // Meowth
         };
 
         const STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -1267,5 +1267,3 @@
     </script>
 </body>
 </html>
-
-
