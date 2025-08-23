@@ -350,6 +350,12 @@
     </style>
 </head>
 <body>
+    <!-- Start Screen -->
+    <div id="start-screen" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-90 flex flex-col justify-center items-center z-50 cursor-pointer">
+        <h1 class="pokemon-title text-6xl md:text-8xl text-center mb-8">PokéChess</h1>
+        <p class="text-white text-2xl animate-pulse" style="font-family: 'Press Start 2P', cursive;">Tap to Start</p>
+    </div>
+
     <div id="game-container" class="game-container">
         <h1 class="pokemon-title text-5xl md:text-6xl text-center mb-4">
             <span class="text-title">PokéChess</span>
@@ -502,6 +508,7 @@
         const songTitleElement = document.getElementById('song-title');
         const gameContainer = document.getElementById('game-container');
         const filterButton = document.getElementById('filter-button');
+        const startScreen = document.getElementById('start-screen');
         
         const battleMusic = document.getElementById('battle-music');
         const battleMusicWild = document.getElementById('battle-music-wild');
@@ -635,6 +642,7 @@
         }
 
         function playNextSongInPlaylist() {
+            if (!isMusicStarted) return;
             if (currentPlaylist.length > 0) {
                  currentPlaylist[currentPlaylistIndex].pause();
                  currentPlaylist[currentPlaylistIndex].currentTime = 0;
@@ -695,12 +703,11 @@
         function initGame(isFromResetButton = false) {
             moveHistory = [STARTING_FEN];
             currentMoveIndex = 0;
-            isMusicStarted = false;
+            
             stopAllMusic();
             
             if (isFromResetButton) {
                 startRandomPlaylist();
-                isMusicStarted = true;
             }
 
             loadFen(STARTING_FEN);
@@ -1003,13 +1010,6 @@
         }
 
         function performMove(from, to, promotionPiece = null) {
-            // --- Start Music on First Move ---
-            if (!isMusicStarted) {
-                startInitialPlaylist();
-                isMusicStarted = true;
-            }
-            // --- End Music Logic ---
-
             const piece = board[from.row][from.col];
             const enPassantCol = enPassantTarget !== '-' ? FILES.indexOf(enPassantTarget[0]) : -1;
             const enPassantRow = enPassantTarget !== '-' ? 8 - parseInt(enPassantTarget[1]) : -1;
@@ -1243,6 +1243,14 @@
             return null;
         }
 
+        function initializeAudioAndStartGame() {
+            if (isMusicStarted) return;
+            isMusicStarted = true;
+            startInitialPlaylist();
+            startScreen.classList.add('hidden');
+        }
+
+        startScreen.addEventListener('click', initializeAudioAndStartGame);
         boardElement.addEventListener('click', onSquareClick);
         resetButton.addEventListener('click', () => {
             initGame(true);
