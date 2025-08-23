@@ -51,13 +51,13 @@
             box-shadow: none;
         }
         .gameboy-filter .light { 
-            background-image: url('https://i.ibb.co/WvMtWgSR/PKC-Grey-Square.jpg');
+            background-image: url('https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/PKC-Grey-Square.jpg');
             background-size: cover;
             background-position: center;
             background-color: #C8C8D1 !important; 
         }
         .gameboy-filter .dark {
-            background-image: url('https://i.ibb.co/7NL3JqRS/PKC-Red-Square.jpg');
+            background-image: url('https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/PKC-Red-Square.jpg');
             background-size: cover;
             background-position: center;
             background-color: #d59a9a !important; /* Fallback color */
@@ -353,7 +353,7 @@
     <div id="game-container" class="game-container">
         <h1 class="pokemon-title text-5xl md:text-6xl text-center mb-4">
             <span class="text-title">PokéChess</span>
-            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/POK%C3%A9CHESS/6c57928369ed701bd989e2b264aab956.png" class="image-title mx-auto" alt="PokéChess">
+            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/title.png" class="image-title mx-auto" alt="PokéChess">
         </h1>
         
         <div class="relative w-full" style="padding-top: 100%;">
@@ -365,15 +365,15 @@
                 <button id="reset-button" class="pokemon-button">
                     <span class="text-button">New Game</span>
                     <div class="image-button hidden flex-col items-center space-y-1">
-                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/NEW/44cebcc6717b2fca9be1586c41dfecea.png" alt="New">
-                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/GAME/48b39ee034613f0aa8b00159a77cb488.png" alt="Game">
+                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/new.png" alt="New">
+                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/game.png" alt="Game">
                     </div>
                 </button>
                 <button id="flip-board-button" class="pokemon-button">
                     <span class="text-button">Flip Board</span>
                     <div class="image-button hidden flex-col items-center space-y-1">
-                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/FLIP/07df51bd5327de8308a59737411de364.png" alt="Flip">
-                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/BOARD/38348ec7055df78f54d680ddc9fe68e4.png" alt="Board">
+                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/flip.png" alt="Flip">
+                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/board.png" alt="Board">
                     </div>
                 </button>
                 <button id="next-song-button" class="pokemon-button icon-button">
@@ -383,28 +383,28 @@
                         </svg>
                     </span>
                     <div class="image-button hidden flex-col items-center">
-                        <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/MUSIC/199b33b7fead06beeac793d0814beebb.png" alt="Music">
+                        <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/music.png" alt="Music">
                     </div>
                 </button>
                 <button id="filter-button" class="pokemon-button icon-button">
                        <span class="text-button">
-                           <img src="https://static.thenounproject.com/png/1680894-200.png" alt="Filter" class="h-8">
+                           <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-button.png" alt="Filter" class="h-8">
                        </span>
                        <div class="image-button hidden flex-col items-center">
-                            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/FILTER/c7513dcd26fe97b3374b9f855449d0c1.png" alt="Filter">
+                            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/filter.png" alt="Filter">
                        </div>
                 </button>
                 <div class="undo-redo-wrapper flex items-stretch">
                     <button id="undo-button" class="pokemon-button">
                         <span class="text-button">Undo</span>
                         <div class="image-button hidden flex-col items-center">
-                            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/UNDO/ab43ac6f68628331236861b74f621126.png" alt="Undo">
+                            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/undo.png" alt="Undo">
                         </div>
                     </button>
                     <button id="redo-button" class="pokemon-button">
                         <span class="text-button">Redo</span>
                         <div class="image-button hidden flex-col items-center">
-                            <img src="https://www.font-generator.com/font-api/preview/PokemonGB/92/000000/none/REDO/56ba1134b12fe99833f61640fe56f1ad.png" alt="Redo">
+                            <img src="https://github.com/JuanGaspard/PokeChess/blob/main/sprites/board/filter-text/redo.png" alt="Redo">
                         </div>
                     </button>
                 </div>
@@ -582,21 +582,21 @@
 
 
         const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-        const POKEMON_SPRITES = { 'K': 'https://play.pokemonshowdown.com/sprites/ani/arceus.gif', 'Q': 'https://play.pokemonshowdown.com/sprites/ani/lugia.gif', 'R': 'https://play.pokemonshowdown.com/sprites/ani/blastoise.gif', 'B': 'https://play.pokemonshowdown.com/sprites/ani/lucario.gif', 'N': 'https://play.pokemonshowdown.com/sprites/ani/rapidash.gif', 'P': 'https://play.pokemonshowdown.com/sprites/ani/pikachu.gif', 'k': 'https://play.pokemonshowdown.com/sprites/ani/giratina-origin.gif', 'q': 'https://play.pokemonshowdown.com/sprites/ani/mewtwo.gif', 'r': 'https://play.pokemonshowdown.com/sprites/ani/tyranitar.gif', 'b': 'https://play.pokemonshowdown.com/sprites/ani/gengar.gif', 'n': 'https://play.pokemonshowdown.com/sprites/ani/zoroark.gif', 'p': 'https://play.pokemonshowdown.com/sprites/ani/mimikyu-busted.gif' };
+        const POKEMON_SPRITES = { 'K': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/arceus.gif', 'Q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/lugia.gif', 'R': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/blastoise.gif', 'B': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/lucario.gif', 'N': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/rapidash.gif', 'P': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/pikachu.gif', 'k': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/giratina-origin.gif', 'q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/mewtwo.gif', 'r': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/tyranitar.gif', 'b': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/gengar.gif', 'n': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/zoroark.gif', 'p': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/animated/mimikyu-busted.gif' };
         
         const POKEMON_SPRITES_STATIC = { 
-            'K': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/crystal/transparent/244.png', // Entei
-            'Q': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/144.png', // Articuno
-            'R': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/9.png',  // Blastoise
-            'B': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/68.png',  // Machamp
-            'N': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/78.png',  // Rapidash
-            'P': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/25.png',  // Pikachu
-            'k': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/silver/transparent/160.png', // Feraligatr
-            'q': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/crystal/transparent/150.png', // Mewtwo
-            'r': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/112.png', // Rhydon
-            'b': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/94.png',  // Gengar
-            'n': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/transparent/59.png',  // Arcanine
-            'p': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/crystal/transparent/52.png'  // Meowth
+            'K': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/entei.png', // Entei
+            'Q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/articuno.png', // Articuno
+            'R': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/blastoise.png',  // Blastoise
+            'B': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/machamp.png',  // Machamp
+            'N': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/rapidash.png',  // Rapidash
+            'P': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/pikachu.png',  // Pikachu
+            'k': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/feligatr.png', // Feraligatr
+            'q': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/mewtwo.png', // Mewtwo
+            'r': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/rhydon.png', // Rhydon
+            'b': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/gengar.png',  // Gengar
+            'n': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/arcanine.png',  // Arcanine
+            'p': 'https://github.com/JuanGaspard/PokeChess/blob/main/sprites/old/meowth.png'  // Meowth
         };
 
         const STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -1267,4 +1267,5 @@
     </script>
 </body>
 </html>
+
 
